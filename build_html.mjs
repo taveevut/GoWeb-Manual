@@ -1,0 +1,119 @@
+import fs from "fs";
+import path from "path";
+import vm from "vm";
+import { fileURLToPath } from "url";
+
+const __filename = fileURLToPath(import.meta.url);
+const __dirname = path.dirname(__filename);
+
+// Load marked.min.js
+const markedCode = fs.readFileSync(path.join(__dirname, "assets/js/marked.min.js"), "utf-8");
+const sandbox = {};
+vm.createContext(sandbox);
+vm.runInContext(markedCode, sandbox);
+
+const markdown = fs.readFileSync(path.join(__dirname, "USER_MANUAL.md"), "utf-8");
+const renderedHtml = sandbox.marked.parse(markdown);
+
+const cssCode = fs.readFileSync(path.join(__dirname, "style.css"), "utf-8");
+const jsCode = fs.readFileSync(path.join(__dirname, "app.js"), "utf-8");
+
+const htmlTemplate = `<!DOCTYPE html>
+<html lang="th">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>คู่มือการใช้งานระบบบริหารจัดการเว็บไซต์และบริการประชาชน (GoWeb CMS & E-Service)</title>
+  <style>
+\${cssCode}
+  </style>
+  <link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>🌐</text></svg>">
+</head>
+<body>
+
+  <!-- Top Navigation Header -->
+  <header class="site-header">
+    <div class="header-left">
+      <button type="button" class="menu-toggle-btn" id="menu-toggle-btn" aria-label="เปิดเมนูสารบัญ">
+        ☰
+      </button>
+      <a href="./index.html" class="brand-badge">
+        <div class="brand-logo-icon">🌐</div>
+        <span>GoWeb Manual</span>
+      </a>
+      <span class="version-tag">v1.0.0</span>
+    </div>
+
+    <div class="header-right">
+      <button type="button" class="btn-icon" id="print-btn" title="พิมพ์หรือบันทึกเป็น PDF">
+        <svg width="16" height="16" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 17h2a2 2 0 002-2v-4a2 2 0 00-2-2H5a2 2 0 00-2 2v4a2 2 0 002 2h2m2 4h6a2 2 0 002-2v-4a2 2 0 00-2-2H9a2 2 0 00-2 2v4a2 2 0 002 2zm8-12V5a2 2 0 00-2-2H9a2 2 0 00-2 2v4h10z"/>
+        </svg>
+        <span>พิมพ์ / PDF</span>
+      </button>
+
+      <button type="button" class="btn-icon" id="theme-toggle-btn" title="สลับโหมดมืด/สว่าง">
+        <span>สลับธีม</span>
+      </button>
+    </div>
+  </header>
+
+  <!-- App Layout -->
+  <div class="app-container">
+    
+    <!-- Sidebar Navigation (TOC) -->
+    <aside class="app-sidebar" id="app-sidebar">
+      <div class="sidebar-search-box">
+        <input 
+          type="search" 
+          id="sidebar-search" 
+          class="search-input" 
+          placeholder="🔍 ค้นหาหัวข้อในคู่มือ..." 
+          aria-label="ค้นหาหัวข้อในคู่มือ"
+        >
+      </div>
+
+      <div class="toc-group-title">สารบัญหัวข้อ (Table of Contents)</div>
+
+      <nav class="sidebar-nav-container" id="toc-nav">
+        <!-- Dynamically generated from headings in manual content -->
+      </nav>
+
+      <div class="sidebar-footer">
+        <span>รหัส: <code>GOWEB-MAN-CMS-001</code></span>
+        <span>v1.0.0</span>
+      </div>
+    </aside>
+
+    <!-- Main Content Area -->
+    <main class="app-main">
+      <article id="manual-content" class="markdown-body">
+\${renderedHtml}
+      </article>
+    </main>
+
+  </div>
+
+  <!-- Back to Top Button -->
+  <button type="button" class="back-to-top" id="back-to-top" title="กลับสู่ด้านบน" aria-label="กลับสู่ด้านบน">
+    <svg width="20" height="20" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+      <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M5 15l7-7 7 7"/>
+    </svg>
+  </button>
+
+  <!-- Image Lightbox Modal -->
+  <div class="lightbox-modal" id="lightbox-modal">
+    <button type="button" class="lightbox-close" id="lightbox-close" aria-label="ปิดภาพขยาย">&times;</button>
+    <img src="" alt="ภาพขยาย" class="lightbox-img" id="lightbox-img">
+  </div>
+
+  <!-- Client Application -->
+  <script>
+\${jsCode}
+  </script>
+</body>
+</html>
+`;
+
+fs.writeFileSync(path.join(__dirname, "index.html"), htmlTemplate, "utf-8");
+console.log("✅ index.html generated with GoWeb branding!");

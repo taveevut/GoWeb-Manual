@@ -3,11 +3,10 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>คู่มือการใช้งานระบบบริหารจัดการเว็บไซต์และบริการประชาชน (Web CMS & E-Service)</title>
-  <!-- Inline styles guarantee 100% flawless styling even when double-clicking index.html directly from file:// -->
+  <title>คู่มือการใช้งานระบบบริหารจัดการเว็บไซต์และบริการประชาชน (GoWeb CMS & E-Service)</title>
   <style>
 /* ==========================================================================
-   ITCW Web CMS & E-Service Manual — Modern Stylesheet
+   GoWeb CMS & E-Service Manual — Modern Stylesheet
    Supports Light/Dark Mode, Responsive Sidebar, ScrollSpy, Lightbox & Print
    ========================================================================== */
 
@@ -624,7 +623,7 @@ body {
 }
 
   </style>
-  <link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>📖</text></svg>">
+  <link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>🌐</text></svg>">
 </head>
 <body>
 
@@ -635,8 +634,8 @@ body {
         ☰
       </button>
       <a href="./index.html" class="brand-badge">
-        <div class="brand-logo-icon">📖</div>
-        <span>ITCW Manual</span>
+        <div class="brand-logo-icon">🌐</div>
+        <span>GoWeb Manual</span>
       </a>
       <span class="version-tag">v1.0.0</span>
     </div>
@@ -677,7 +676,7 @@ body {
       </nav>
 
       <div class="sidebar-footer">
-        <span>รหัส: <code>ITCW-MAN-CMS-001</code></span>
+        <span>รหัส: <code>GOWEB-MAN-CMS-001</code></span>
         <span>v1.0.0</span>
       </div>
     </aside>
@@ -702,7 +701,7 @@ body {
 </tr>
 <tr>
 <td align="left"><strong>รหัสเอกสาร</strong></td>
-<td align="left"><code>ITCW-MAN-CMS-001</code></td>
+<td align="left"><code>GOWEB-MAN-CMS-001</code></td>
 </tr>
 <tr>
 <td align="left"><strong>เวอร์ชันปัจจุบัน</strong></td>
@@ -1323,173 +1322,170 @@ body {
     <img src="" alt="ภาพขยาย" class="lightbox-img" id="lightbox-img">
   </div>
 
-  <!-- Client Application (Pure JS: TOC, ScrollSpy, Lightbox, Dark/Light Mode, Search) -->
+  <!-- Client Application -->
   <script>
 /**
- * ITCW Web CMS & E-Service Manual — Frontend Client App
- * Pure Vanilla JavaScript: Table of Contents, ScrollSpy, Lightbox, Search & Theme Toggle
- * Works 100% offline and when opening index.html directly from file://!
+ * GoWeb CMS & E-Service Manual Client Application
+ * Features:
+ * - Dynamic Table of Contents (TOC) with slugified heading anchors
+ * - ScrollSpy for active section highlighting
+ * - Real-time TOC Search / Filter
+ * - Light / Dark Theme Switcher with local persistence
+ * - Image Lightbox for screenshots
+ * - Responsive mobile drawer navigation
+ * - Print handling and Back-to-Top button
  */
 
-document.addEventListener('DOMContentLoaded', () => {
-  const contentEl = document.getElementById('manual-content');
-  const tocEl = document.getElementById('toc-nav');
-  const searchInput = document.getElementById('sidebar-search');
+(function () {
+  'use strict';
+
+  // --- Theme Management ---
+  const THEME_KEY = 'goweb-manual-theme';
   const themeToggleBtn = document.getElementById('theme-toggle-btn');
-  const menuToggleBtn = document.getElementById('menu-toggle-btn');
-  const sidebarEl = document.getElementById('app-sidebar');
-  const backToTopBtn = document.getElementById('back-to-top');
-  const lightboxModal = document.getElementById('lightbox-modal');
-  const lightboxImg = document.getElementById('lightbox-img');
-  const lightboxClose = document.getElementById('lightbox-close');
-  const printBtn = document.getElementById('print-btn');
 
-  // 1. Theme Management (Dark / Light)
-  const savedTheme = localStorage.getItem('itcw-manual-theme') || 
-    (window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light');
-  document.documentElement.setAttribute('data-theme', savedTheme);
-  updateThemeIcon(savedTheme);
-
-  themeToggleBtn.addEventListener('click', () => {
-    const current = document.documentElement.getAttribute('data-theme');
-    const next = current === 'dark' ? 'light' : 'dark';
-    document.documentElement.setAttribute('data-theme', next);
-    localStorage.setItem('itcw-manual-theme', next);
-    updateThemeIcon(next);
-  });
-
-  function updateThemeIcon(theme) {
-    themeToggleBtn.innerHTML = theme === 'dark' 
-      ? '<svg width="16" height="16" fill="currentColor" viewBox="0 0 24 24"><path d="M12 3v1m0 16v1m9-9h-1M4 12H3m15.364 6.364l-.707-.707M6.343 6.343l-.707-.707m12.728 0l-.707.707M6.343 17.657l-.707.707M16 12a4 4 0 11-8 0 4 4 0 018 0z" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg> <span>สว่าง</span>'
-      : '<svg width="16" height="16" fill="currentColor" viewBox="0 0 24 24"><path d="M20.354 15.354A9 9 0 018.646 3.646 9.003 9.003 0 0012 21a9.003 9.003 0 008.354-5.646z"/></svg> <span>มืด</span>';
-  }
-
-  // 2. Mobile Menu Toggle
-  if (menuToggleBtn && sidebarEl) {
-    menuToggleBtn.addEventListener('click', () => {
-      sidebarEl.classList.toggle('open');
-    });
-  }
-
-  // 3. Print Manual
-  if (printBtn) {
-    printBtn.addEventListener('click', () => window.print());
-  }
-
-  // 4. Back to Top Button
-  window.addEventListener('scroll', () => {
-    if (window.scrollY > 400) {
-      backToTopBtn.classList.add('visible');
+  function initTheme() {
+    const savedTheme = localStorage.getItem(THEME_KEY);
+    if (savedTheme) {
+      document.documentElement.setAttribute('data-theme', savedTheme);
+      updateThemeButton(savedTheme);
     } else {
-      backToTopBtn.classList.remove('visible');
+      const prefersDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
+      const initialTheme = prefersDark ? 'dark' : 'light';
+      document.documentElement.setAttribute('data-theme', initialTheme);
+      updateThemeButton(initialTheme);
     }
-  });
-  backToTopBtn.addEventListener('click', () => {
-    window.scrollTo({ top: 0, behavior: 'smooth' });
-  });
+  }
 
-  // 5. Image Lightbox Modal
-  function setupLightbox() {
-    const images = contentEl.querySelectorAll('img');
-    images.forEach(img => {
-      img.addEventListener('click', () => {
-        lightboxImg.src = img.src;
-        lightboxModal.classList.add('open');
-      });
-    });
+  function updateThemeButton(theme) {
+    if (!themeToggleBtn) return;
+    if (theme === 'dark') {
+      themeToggleBtn.innerHTML = '<span>☀️ สว่าง</span>';
+      themeToggleBtn.setAttribute('title', 'เปลี่ยนเป็นโหมดสว่าง');
+    } else {
+      themeToggleBtn.innerHTML = '<span>🌙 มืด</span>';
+      themeToggleBtn.setAttribute('title', 'เปลี่ยนเป็นโหมดมืด');
+    }
+  }
 
-    lightboxClose.addEventListener('click', () => lightboxModal.classList.remove('open'));
-    lightboxModal.addEventListener('click', (e) => {
-      if (e.target !== lightboxImg) lightboxModal.classList.remove('open');
-    });
-    document.addEventListener('keydown', (e) => {
-      if (e.key === 'Escape') lightboxModal.classList.remove('open');
+  if (themeToggleBtn) {
+    themeToggleBtn.addEventListener('click', () => {
+      const currentTheme = document.documentElement.getAttribute('data-theme') || 'light';
+      const newTheme = currentTheme === 'dark' ? 'light' : 'dark';
+      document.documentElement.setAttribute('data-theme', newTheme);
+      localStorage.setItem(THEME_KEY, newTheme);
+      updateThemeButton(newTheme);
     });
   }
 
-  // 6. Table of Contents & Anchor Generator
-  function generateTOCAndAnchors() {
-    const headings = contentEl.querySelectorAll('h1, h2, h3');
-    tocEl.innerHTML = '';
-    const headingElements = [];
+  initTheme();
 
-    headings.forEach((h, index) => {
-      let title = h.innerText.trim();
-      let id = h.id || slugify(title) || `section-${index}`;
-      h.id = id;
-
-      const level = parseInt(h.tagName.substring(1), 10);
-      headingElements.push({ id, title, level, element: h });
-
-      // Add to TOC (H2 for main sections, H3 for sub-sections)
-      if (level === 2 || level === 3) {
-        const link = document.createElement('a');
-        link.href = `#${id}`;
-        link.className = level === 2 ? 'toc-link' : 'toc-link toc-sub-link';
-        link.innerText = title;
-        link.setAttribute('data-target-id', id);
-
-        link.addEventListener('click', () => {
-          if (window.innerWidth <= 1024) {
-            sidebarEl.classList.remove('open');
-          }
-        });
-
-        tocEl.appendChild(link);
-      }
-    });
-
-    // 7. ScrollSpy (Active Section Tracking)
-    setupScrollSpy(headingElements);
-  }
-
+  // --- Slugify helper ---
   function slugify(text) {
     return text
-      .toLowerCase()
-      .replace(/[^\u0E00-\u0E7Fa-z0-9\s-]/g, '')
-      .replace(/\s+/g, '-')
-      .replace(/-+/g, '-');
+      .toString()
+      .trim()
+      .replace(/[\s\(\)\[\]\/\\:.,#?]+/g, '-')
+      .replace(/^-+|-+$/g, '')
+      .toLowerCase() || 'section';
   }
 
-  function setupScrollSpy(headingElements) {
-    const tocLinks = tocEl.querySelectorAll('.toc-link');
+  // --- Generate Table of Contents (TOC) ---
+  const manualContent = document.getElementById('manual-content');
+  const tocNav = document.getElementById('toc-nav');
 
-    function onScroll() {
-      const scrollPos = window.scrollY + 120;
-      let currentActiveId = null;
+  if (manualContent && tocNav) {
+    const headings = manualContent.querySelectorAll('h2, h3');
+    const fragment = document.createDocumentFragment();
+    const usedSlugs = new Map();
 
-      for (let i = 0; i < headingElements.length; i++) {
-        const item = headingElements[i];
-        if (item.element.offsetTop <= scrollPos) {
-          currentActiveId = item.id;
-        }
+    headings.forEach((heading) => {
+      const level = heading.tagName.toLowerCase();
+      const text = heading.textContent.trim();
+      if (!text) return;
+
+      let baseSlug = slugify(text);
+      let count = usedSlugs.get(baseSlug) || 0;
+      let uniqueSlug = count === 0 ? baseSlug : `${baseSlug}-${count}`;
+      usedSlugs.set(baseSlug, count + 1);
+
+      if (!heading.id) {
+        heading.id = uniqueSlug;
       }
 
-      if (currentActiveId) {
-        tocLinks.forEach(link => {
-          if (link.getAttribute('data-target-id') === currentActiveId) {
-            link.classList.add('active');
-          } else {
-            link.classList.remove('active');
-          }
-        });
+      const link = document.createElement('a');
+      link.href = `#${heading.id}`;
+      link.className = `toc-link toc-${level}`;
+      link.textContent = text;
+      link.setAttribute('data-target', heading.id);
+
+      link.addEventListener('click', (e) => {
+        // Close sidebar on mobile upon clicking
+        const sidebar = document.getElementById('app-sidebar');
+        if (sidebar && window.innerWidth <= 1024) {
+          sidebar.classList.remove('open');
+        }
+      });
+
+      fragment.appendChild(link);
+    });
+
+    tocNav.appendChild(fragment);
+  }
+
+  // --- ScrollSpy for Active TOC Link ---
+  const tocLinks = document.querySelectorAll('.toc-link');
+  const trackedHeadings = manualContent ? Array.from(manualContent.querySelectorAll('h2, h3')) : [];
+
+  function onScrollSpy() {
+    const scrollPos = window.scrollY + 100;
+    let activeHeadingId = null;
+
+    for (let i = trackedHeadings.length - 1; i >= 0; i--) {
+      const heading = trackedHeadings[i];
+      if (heading.offsetTop <= scrollPos) {
+        activeHeadingId = heading.id;
+        break;
       }
     }
 
-    window.addEventListener('scroll', onScroll, { passive: true });
-    onScroll();
+    tocLinks.forEach((link) => {
+      if (activeHeadingId && link.getAttribute('data-target') === activeHeadingId) {
+        link.classList.add('active');
+        // Scroll link into view in sidebar if necessary
+        const sidebar = document.getElementById('app-sidebar');
+        if (sidebar) {
+          const linkTop = link.offsetTop;
+          const sidebarScroll = sidebar.scrollTop;
+          const sidebarHeight = sidebar.clientHeight;
+          if (linkTop < sidebarScroll + 50 || linkTop > sidebarScroll + sidebarHeight - 50) {
+            link.scrollIntoView({ block: 'nearest', behavior: 'smooth' });
+          }
+        }
+      } else {
+        link.classList.remove('active');
+      }
+    });
   }
 
-  // 8. Search Filter in Sidebar
+  let scrollThrottle = null;
+  window.addEventListener('scroll', () => {
+    if (!scrollThrottle) {
+      scrollThrottle = setTimeout(() => {
+        onScrollSpy();
+        scrollThrottle = null;
+      }, 50);
+    }
+  });
+
+  // --- Sidebar Search / Filter ---
+  const searchInput = document.getElementById('sidebar-search');
   if (searchInput) {
     searchInput.addEventListener('input', (e) => {
-      const query = e.target.value.toLowerCase().trim();
-      const links = tocEl.querySelectorAll('.toc-link');
-
-      links.forEach(link => {
-        const text = link.innerText.toLowerCase();
+      const query = e.target.value.trim().toLowerCase();
+      tocLinks.forEach((link) => {
+        const text = link.textContent.toLowerCase();
         if (!query || text.includes(query)) {
-          link.style.display = 'block';
+          link.style.display = '';
         } else {
           link.style.display = 'none';
         }
@@ -1497,25 +1493,90 @@ document.addEventListener('DOMContentLoaded', () => {
     });
   }
 
-  // 9. Initialize
-  if (contentEl && contentEl.children.length > 0) {
-    // Content is already pre-rendered directly in index.html!
-    generateTOCAndAnchors();
-    setupLightbox();
-  } else {
-    // Fallback: fetch dynamically if opened via server
-    fetch('./USER_MANUAL.md?t=' + Date.now())
-      .then(res => res.text())
-      .then(md => {
-        if (typeof marked !== 'undefined') {
-          contentEl.innerHTML = marked.parse(md);
-          generateTOCAndAnchors();
-          setupLightbox();
-        }
-      })
-      .catch(console.error);
+  // --- Mobile Sidebar Drawer Toggle ---
+  const menuToggleBtn = document.getElementById('menu-toggle-btn');
+  const appSidebar = document.getElementById('app-sidebar');
+
+  if (menuToggleBtn && appSidebar) {
+    menuToggleBtn.addEventListener('click', () => {
+      appSidebar.classList.toggle('open');
+    });
+
+    document.addEventListener('click', (e) => {
+      if (
+        appSidebar.classList.contains('open') &&
+        !appSidebar.contains(e.target) &&
+        !menuToggleBtn.contains(e.target)
+      ) {
+        appSidebar.classList.remove('open');
+      }
+    });
   }
-});
+
+  // --- Back to Top Button ---
+  const backToTopBtn = document.getElementById('back-to-top');
+  if (backToTopBtn) {
+    window.addEventListener('scroll', () => {
+      if (window.scrollY > 400) {
+        backToTopBtn.classList.add('visible');
+      } else {
+        backToTopBtn.classList.remove('visible');
+      }
+    });
+
+    backToTopBtn.addEventListener('click', () => {
+      window.scrollTo({ top: 0, behavior: 'smooth' });
+    });
+  }
+
+  // --- Print Button ---
+  const printBtn = document.getElementById('print-btn');
+  if (printBtn) {
+    printBtn.addEventListener('click', () => {
+      window.print();
+    });
+  }
+
+  // --- Image Lightbox ---
+  const lightboxModal = document.getElementById('lightbox-modal');
+  const lightboxImg = document.getElementById('lightbox-img');
+  const lightboxClose = document.getElementById('lightbox-close');
+
+  if (lightboxModal && lightboxImg) {
+    const images = manualContent ? manualContent.querySelectorAll('img') : [];
+
+    images.forEach((img) => {
+      img.style.cursor = 'zoom-in';
+      img.addEventListener('click', () => {
+        lightboxImg.src = img.src;
+        lightboxImg.alt = img.alt || 'ภาพขยาย';
+        lightboxModal.classList.add('active');
+      });
+    });
+
+    function closeLightbox() {
+      lightboxModal.classList.remove('active');
+      lightboxImg.src = '';
+    }
+
+    if (lightboxClose) {
+      lightboxClose.addEventListener('click', closeLightbox);
+    }
+
+    lightboxModal.addEventListener('click', (e) => {
+      if (e.target === lightboxModal) {
+        closeLightbox();
+      }
+    });
+
+    document.addEventListener('keydown', (e) => {
+      if (e.key === 'Escape' && lightboxModal.classList.contains('active')) {
+        closeLightbox();
+      }
+    });
+  }
+
+})();
 
   </script>
 </body>
