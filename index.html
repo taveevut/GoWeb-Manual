@@ -1,0 +1,1522 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>คู่มือการใช้งานระบบบริหารจัดการเว็บไซต์และบริการประชาชน (Web CMS & E-Service)</title>
+  <!-- Inline styles guarantee 100% flawless styling even when double-clicking index.html directly from file:// -->
+  <style>
+/* ==========================================================================
+   ITCW Web CMS & E-Service Manual — Modern Stylesheet
+   Supports Light/Dark Mode, Responsive Sidebar, ScrollSpy, Lightbox & Print
+   ========================================================================== */
+
+:root {
+  --font-sans: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Sarabun", "Noto Sans Thai", Helvetica, Arial, sans-serif;
+  --font-mono: ui-monospace, SFMono-Regular, "SF Mono", Menlo, Consolas, "Liberation Mono", monospace;
+
+  /* Light Theme Variables */
+  --bg-page: #f8fafc;
+  --bg-surface: #ffffff;
+  --bg-surface-elevated: #ffffff;
+  --bg-sidebar: #0f172a;
+  --bg-sidebar-hover: #1e293b;
+  --bg-sidebar-active: #0284c7;
+  --text-sidebar: #cbd5e1;
+  --text-sidebar-heading: #94a3b8;
+  --text-sidebar-active: #ffffff;
+
+  --text-primary: #0f172a;
+  --text-secondary: #475569;
+  --text-muted: #64748b;
+  
+  --border-subtle: #e2e8f0;
+  --border-strong: #cbd5e1;
+  
+  --brand-primary: #0284c7;
+  --brand-primary-hover: #0369a1;
+  --brand-soft: #e0f2fe;
+  --brand-text: #0369a1;
+
+  --accent-success: #10b981;
+  --accent-warning: #f59e0b;
+  --accent-danger: #ef4444;
+
+  --code-bg: #f1f5f9;
+  --code-text: #0f172a;
+
+  --shadow-sm: 0 1px 2px 0 rgb(0 0 0 / 0.05);
+  --shadow-md: 0 4px 6px -1px rgb(0 0 0 / 0.1), 0 2px 4px -2px rgb(0 0 0 / 0.1);
+  --shadow-lg: 0 10px 15px -3px rgb(0 0 0 / 0.1), 0 4px 6px -4px rgb(0 0 0 / 0.1);
+  --shadow-xl: 0 20px 25px -5px rgb(0 0 0 / 0.1), 0 8px 10px -6px rgb(0 0 0 / 0.1);
+
+  --header-height: 64px;
+  --sidebar-width: 320px;
+}
+
+[data-theme="dark"] {
+  --bg-page: #0b0f19;
+  --bg-surface: #111827;
+  --bg-surface-elevated: #1f2937;
+  --bg-sidebar: #090d16;
+  --bg-sidebar-hover: #172033;
+  --bg-sidebar-active: #0284c7;
+  --text-sidebar: #94a3b8;
+  --text-sidebar-heading: #64748b;
+  --text-sidebar-active: #ffffff;
+
+  --text-primary: #f8fafc;
+  --text-secondary: #cbd5e1;
+  --text-muted: #94a3b8;
+  
+  --border-subtle: #1e293b;
+  --border-strong: #334155;
+  
+  --brand-primary: #38bdf8;
+  --brand-primary-hover: #7dd3fc;
+  --brand-soft: #082f49;
+  --brand-text: #7dd3fc;
+
+  --code-bg: #1e293b;
+  --code-text: #f1f5f9;
+}
+
+/* Base Reset & Box Sizing */
+*, *::before, *::after {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+html {
+  font-family: var(--font-sans);
+  font-size: 16px;
+  line-height: 1.6;
+  color: var(--text-primary);
+  background-color: var(--bg-page);
+  scroll-behavior: smooth;
+  scroll-padding-top: calc(var(--header-height) + 20px);
+}
+
+body {
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+}
+
+/* Header Bar */
+.site-header {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: var(--header-height);
+  background: var(--bg-surface);
+  border-bottom: 1px solid var(--border-subtle);
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0 1.5rem;
+  z-index: 50;
+  box-shadow: var(--shadow-sm);
+}
+
+.header-left {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+}
+
+.menu-toggle-btn {
+  display: none;
+  background: transparent;
+  border: 1px solid var(--border-subtle);
+  border-radius: 6px;
+  padding: 0.5rem;
+  color: var(--text-primary);
+  cursor: pointer;
+  font-size: 1.1rem;
+}
+
+.brand-badge {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  text-decoration: none;
+  color: var(--text-primary);
+  font-weight: 700;
+  font-size: 1.1rem;
+}
+
+.brand-logo-icon {
+  width: 32px;
+  height: 32px;
+  background: linear-gradient(135deg, #0284c7, #2563eb);
+  color: #fff;
+  border-radius: 8px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 1rem;
+  font-weight: 800;
+}
+
+.version-tag {
+  background: var(--brand-soft);
+  color: var(--brand-text);
+  font-size: 0.75rem;
+  font-weight: 600;
+  padding: 0.15rem 0.5rem;
+  border-radius: 9999px;
+  border: 1px solid rgba(2, 132, 199, 0.2);
+}
+
+.header-right {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+}
+
+.btn-icon {
+  background: var(--bg-page);
+  border: 1px solid var(--border-subtle);
+  color: var(--text-secondary);
+  border-radius: 8px;
+  padding: 0.45rem 0.75rem;
+  font-size: 0.875rem;
+  font-weight: 500;
+  display: flex;
+  align-items: center;
+  gap: 0.4rem;
+  cursor: pointer;
+  transition: all 0.15s ease;
+}
+
+.btn-icon:hover {
+  background: var(--border-subtle);
+  color: var(--text-primary);
+}
+
+/* App Layout */
+.app-container {
+  display: flex;
+  margin-top: var(--header-height);
+  min-height: calc(100vh - var(--header-height));
+}
+
+/* Sidebar */
+.app-sidebar {
+  width: var(--sidebar-width);
+  background: var(--bg-sidebar);
+  color: var(--text-sidebar);
+  position: fixed;
+  top: var(--header-height);
+  bottom: 0;
+  left: 0;
+  display: flex;
+  flex-direction: column;
+  border-right: 1px solid rgba(255, 255, 255, 0.05);
+  z-index: 40;
+  transition: transform 0.25s ease;
+}
+
+.sidebar-search-box {
+  padding: 1rem;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+}
+
+.search-input {
+  width: 100%;
+  background: rgba(255, 255, 255, 0.07);
+  border: 1px solid rgba(255, 255, 255, 0.12);
+  border-radius: 8px;
+  padding: 0.5rem 0.85rem;
+  color: #fff;
+  font-size: 0.875rem;
+  font-family: inherit;
+  outline: none;
+  transition: all 0.15s ease;
+}
+
+.search-input:focus {
+  background: rgba(255, 255, 255, 0.12);
+  border-color: var(--brand-primary);
+  box-shadow: 0 0 0 2px rgba(56, 189, 248, 0.2);
+}
+
+.sidebar-nav-container {
+  flex: 1;
+  overflow-y: auto;
+  padding: 1rem 0.75rem 2rem 0.75rem;
+}
+
+.sidebar-nav-container::-webkit-scrollbar {
+  width: 6px;
+}
+
+.sidebar-nav-container::-webkit-scrollbar-thumb {
+  background: rgba(255, 255, 255, 0.15);
+  border-radius: 3px;
+}
+
+.toc-group-title {
+  font-size: 0.7rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  color: var(--text-sidebar-heading);
+  padding: 0.75rem 0.5rem 0.35rem 0.5rem;
+}
+
+.toc-link {
+  display: block;
+  padding: 0.45rem 0.65rem;
+  color: var(--text-sidebar);
+  text-decoration: none;
+  font-size: 0.875rem;
+  border-radius: 6px;
+  line-height: 1.4;
+  transition: all 0.15s ease;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.toc-link:hover {
+  background: var(--bg-sidebar-hover);
+  color: #ffffff;
+}
+
+.toc-link.active {
+  background: var(--brand-primary);
+  color: var(--text-sidebar-active);
+  font-weight: 600;
+}
+
+.toc-sub-link {
+  padding-left: 1.4rem;
+  font-size: 0.825rem;
+  color: #94a3b8;
+}
+
+.toc-sub-link:hover {
+  color: #f1f5f9;
+}
+
+.sidebar-footer {
+  padding: 0.85rem 1rem;
+  border-top: 1px solid rgba(255, 255, 255, 0.08);
+  font-size: 0.75rem;
+  color: #64748b;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+/* Main Content Area */
+.app-main {
+  margin-left: var(--sidebar-width);
+  flex: 1;
+  padding: 2.5rem 3.5rem;
+  max-width: 1200px;
+  min-width: 0;
+}
+
+/* Markdown Typography */
+.markdown-body {
+  color: var(--text-primary);
+}
+
+.markdown-body h1 {
+  font-size: 2.25rem;
+  font-weight: 800;
+  line-height: 1.25;
+  margin-top: 1rem;
+  margin-bottom: 1.25rem;
+  color: var(--text-primary);
+  border-bottom: 2px solid var(--border-subtle);
+  padding-bottom: 0.75rem;
+}
+
+.markdown-body h2 {
+  font-size: 1.6rem;
+  font-weight: 700;
+  line-height: 1.35;
+  margin-top: 2.5rem;
+  margin-bottom: 1rem;
+  color: var(--text-primary);
+  border-bottom: 1px solid var(--border-subtle);
+  padding-bottom: 0.5rem;
+}
+
+.markdown-body h3 {
+  font-size: 1.25rem;
+  font-weight: 600;
+  margin-top: 1.75rem;
+  margin-bottom: 0.75rem;
+  color: var(--text-primary);
+}
+
+.markdown-body h4 {
+  font-size: 1.05rem;
+  font-weight: 600;
+  margin-top: 1.25rem;
+  margin-bottom: 0.5rem;
+}
+
+.markdown-body p {
+  margin-bottom: 1.15rem;
+  color: var(--text-secondary);
+  line-height: 1.75;
+}
+
+.markdown-body ul, .markdown-body ol {
+  margin-bottom: 1.25rem;
+  padding-left: 1.75rem;
+  color: var(--text-secondary);
+}
+
+.markdown-body li {
+  margin-bottom: 0.35rem;
+  line-height: 1.65;
+}
+
+.markdown-body hr {
+  height: 1px;
+  background-color: var(--border-subtle);
+  border: none;
+  margin: 2rem 0;
+}
+
+/* Tables */
+.markdown-body table {
+  width: 100%;
+  border-collapse: collapse;
+  margin: 1.5rem 0;
+  font-size: 0.925rem;
+  background: var(--bg-surface);
+  border: 1px solid var(--border-subtle);
+  border-radius: 8px;
+  overflow: hidden;
+  box-shadow: var(--shadow-sm);
+}
+
+.markdown-body th {
+  background: var(--bg-page);
+  color: var(--text-primary);
+  font-weight: 600;
+  padding: 0.75rem 1rem;
+  text-align: left;
+  border-bottom: 1px solid var(--border-subtle);
+}
+
+.markdown-body td {
+  padding: 0.75rem 1rem;
+  border-bottom: 1px solid var(--border-subtle);
+  color: var(--text-secondary);
+  vertical-align: top;
+}
+
+.markdown-body tr:last-child td {
+  border-bottom: none;
+}
+
+.markdown-body tr:hover td {
+  background: rgba(0, 0, 0, 0.015);
+}
+
+[data-theme="dark"] .markdown-body tr:hover td {
+  background: rgba(255, 255, 255, 0.02);
+}
+
+/* Callouts / Blockquotes */
+.markdown-body blockquote {
+  border-left: 4px solid var(--brand-primary);
+  background: var(--brand-soft);
+  color: var(--text-secondary);
+  padding: 1rem 1.25rem;
+  border-radius: 0 8px 8px 0;
+  margin: 1.5rem 0;
+}
+
+.markdown-body blockquote p {
+  color: var(--text-secondary);
+  margin-bottom: 0.5rem;
+}
+
+.markdown-body blockquote p:last-child {
+  margin-bottom: 0;
+}
+
+/* Code */
+.markdown-body code {
+  font-family: var(--font-mono);
+  font-size: 0.875em;
+  background-color: var(--code-bg);
+  color: var(--code-text);
+  padding: 0.15em 0.4em;
+  border-radius: 4px;
+}
+
+.markdown-body pre {
+  background-color: var(--code-bg);
+  color: var(--code-text);
+  padding: 1rem;
+  border-radius: 8px;
+  overflow-x: auto;
+  margin: 1.25rem 0;
+}
+
+.markdown-body pre code {
+  background: transparent;
+  padding: 0;
+}
+
+/* Screenshots / Images */
+.markdown-body img {
+  max-width: 100%;
+  height: auto;
+  border-radius: 8px;
+  border: 1px solid var(--border-subtle);
+  box-shadow: var(--shadow-md);
+  margin: 1rem 0 1.5rem 0;
+  display: block;
+  cursor: zoom-in;
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+
+.markdown-body img:hover {
+  transform: translateY(-2px);
+  box-shadow: var(--shadow-lg);
+}
+
+.markdown-body table img {
+  margin: 0.25rem 0;
+  max-height: 240px;
+  object-fit: cover;
+}
+
+/* Image Lightbox */
+.lightbox-modal {
+  display: none;
+  position: fixed;
+  inset: 0;
+  background: rgba(0, 0, 0, 0.85);
+  backdrop-filter: blur(4px);
+  z-index: 100;
+  align-items: center;
+  justify-content: center;
+  padding: 2rem;
+  cursor: zoom-out;
+}
+
+.lightbox-modal.open {
+  display: flex;
+}
+
+.lightbox-img {
+  max-width: 95vw;
+  max-height: 90vh;
+  object-fit: contain;
+  border-radius: 8px;
+  box-shadow: var(--shadow-xl);
+}
+
+.lightbox-close {
+  position: absolute;
+  top: 1.5rem;
+  right: 1.5rem;
+  background: rgba(255, 255, 255, 0.15);
+  border: none;
+  color: #fff;
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  font-size: 1.5rem;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+/* Back to Top */
+.back-to-top {
+  position: fixed;
+  bottom: 2rem;
+  right: 2rem;
+  width: 44px;
+  height: 44px;
+  border-radius: 50%;
+  background: var(--brand-primary);
+  color: #fff;
+  border: none;
+  box-shadow: var(--shadow-lg);
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  opacity: 0;
+  visibility: hidden;
+  transition: all 0.2s ease;
+  z-index: 30;
+}
+
+.back-to-top.visible {
+  opacity: 1;
+  visibility: visible;
+}
+
+.back-to-top:hover {
+  background: var(--brand-primary-hover);
+  transform: translateY(-2px);
+}
+
+@media (max-width: 1024px) {
+  .menu-toggle-btn {
+    display: inline-flex;
+  }
+
+  .app-sidebar {
+    transform: translateX(-100%);
+  }
+
+  .app-sidebar.open {
+    transform: translateX(0);
+    box-shadow: var(--shadow-xl);
+  }
+
+  .app-main {
+    margin-left: 0;
+    padding: 1.5rem;
+  }
+}
+
+@media print {
+  .site-header, .app-sidebar, .back-to-top, .btn-icon {
+    display: none !important;
+  }
+
+  .app-container {
+    margin-top: 0;
+    display: block;
+  }
+
+  .app-main {
+    margin-left: 0;
+    max-width: 100%;
+    padding: 0;
+  }
+
+  .markdown-body img {
+    max-width: 100%;
+    page-break-inside: avoid;
+    box-shadow: none;
+    border: 1px solid #ccc;
+  }
+
+  .markdown-body table {
+    page-break-inside: avoid;
+  }
+
+  .markdown-body h1, .markdown-body h2 {
+    page-break-after: avoid;
+  }
+}
+
+  </style>
+  <link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>📖</text></svg>">
+</head>
+<body>
+
+  <!-- Top Navigation Header -->
+  <header class="site-header">
+    <div class="header-left">
+      <button type="button" class="menu-toggle-btn" id="menu-toggle-btn" aria-label="เปิดเมนูสารบัญ">
+        ☰
+      </button>
+      <a href="./index.html" class="brand-badge">
+        <div class="brand-logo-icon">📖</div>
+        <span>ITCW Manual</span>
+      </a>
+      <span class="version-tag">v1.0.0</span>
+    </div>
+
+    <div class="header-right">
+      <button type="button" class="btn-icon" id="print-btn" title="พิมพ์หรือบันทึกเป็น PDF">
+        <svg width="16" height="16" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 17h2a2 2 0 002-2v-4a2 2 0 00-2-2H5a2 2 0 00-2 2v4a2 2 0 002 2h2m2 4h6a2 2 0 002-2v-4a2 2 0 00-2-2H9a2 2 0 00-2 2v4a2 2 0 002 2zm8-12V5a2 2 0 00-2-2H9a2 2 0 00-2 2v4h10z"/>
+        </svg>
+        <span>พิมพ์ / PDF</span>
+      </button>
+
+      <button type="button" class="btn-icon" id="theme-toggle-btn" title="สลับโหมดมืด/สว่าง">
+        <span>สลับธีม</span>
+      </button>
+    </div>
+  </header>
+
+  <!-- App Layout -->
+  <div class="app-container">
+    
+    <!-- Sidebar Navigation (TOC) -->
+    <aside class="app-sidebar" id="app-sidebar">
+      <div class="sidebar-search-box">
+        <input 
+          type="search" 
+          id="sidebar-search" 
+          class="search-input" 
+          placeholder="🔍 ค้นหาหัวข้อในคู่มือ..." 
+          aria-label="ค้นหาหัวข้อในคู่มือ"
+        >
+      </div>
+
+      <div class="toc-group-title">สารบัญหัวข้อ (Table of Contents)</div>
+
+      <nav class="sidebar-nav-container" id="toc-nav">
+        <!-- Dynamically generated from headings in manual content -->
+      </nav>
+
+      <div class="sidebar-footer">
+        <span>รหัส: <code>ITCW-MAN-CMS-001</code></span>
+        <span>v1.0.0</span>
+      </div>
+    </aside>
+
+    <!-- Main Content Area -->
+    <main class="app-main">
+      <article id="manual-content" class="markdown-body">
+<h1>คู่มือการใช้งานระบบบริหารจัดการเว็บไซต์และบริการประชาชน</h1>
+<h2>(Web Content Management System &amp; E-Service Manual)</h2>
+<hr>
+<h2>ข้อมูลควบคุมเอกสาร (Document Control &amp; Versioning)</h2>
+<table>
+<thead>
+<tr>
+<th align="left">ข้อมูล</th>
+<th align="left">รายละเอียด</th>
+</tr>
+</thead>
+<tbody><tr>
+<td align="left"><strong>ชื่อเอกสาร</strong></td>
+<td align="left">คู่มือการใช้งานระบบบริหารจัดการเนื้อหาเว็บไซต์และบริการประชาชน (Web CMS &amp; E-Service)</td>
+</tr>
+<tr>
+<td align="left"><strong>รหัสเอกสาร</strong></td>
+<td align="left"><code>ITCW-MAN-CMS-001</code></td>
+</tr>
+<tr>
+<td align="left"><strong>เวอร์ชันปัจจุบัน</strong></td>
+<td align="left"><code>v1.0.0</code></td>
+</tr>
+<tr>
+<td align="left"><strong>วันที่อนุมัติ / เผยแพร่</strong></td>
+<td align="left">29 กันยายน 2569 (2026-09-29)</td>
+</tr>
+<tr>
+<td align="left"><strong>ระดับชั้นความลับ</strong></td>
+<td align="left">สำหรับเจ้าหน้าที่และผู้ดูแลระบบของหน่วยงาน (Internal / Admin Guide)</td>
+</tr>
+<tr>
+<td align="left"><strong>พัฒนาโดย</strong></td>
+<td align="left">ทีมพัฒนาซอฟต์แวร์และเทคโนโลยีสารสนเทศ</td>
+</tr>
+</tbody></table>
+<h3>ประวัติการปรับปรุงเอกสาร (Document Version History)</h3>
+<table>
+<thead>
+<tr>
+<th align="center">เวอร์ชัน</th>
+<th align="center">วันที่ปรับปรุง</th>
+<th align="left">รายละเอียดการเปลี่ยนแปลง</th>
+<th align="center">ผู้จัดทำ / ตำแหน่ง</th>
+<th align="center">ผู้ตรวจสอบ / ผู้อนุมัติ</th>
+</tr>
+</thead>
+<tbody><tr>
+<td align="center"><strong>1.0.0</strong></td>
+<td align="center">29/09/2026</td>
+<td align="left">จัดทำโครงสร้างคู่มือมาตรฐานฉบับสมบูรณ์: ระบบล็อกอิน, แดชบอร์ด, การจัดการข้อมูลแบบ CRUD, โมดูลเนื้อหา 12 หมวด, ระบบคำร้อง E-Service, ระบบร้องเรียน, บุคลากร, การประเมิน ITA/LPA, การตั้งค่าระบบ และการตรวจสอบสิทธิ์การใช้งาน</td>
+<td align="center">ทีมพัฒนาระบบ</td>
+<td align="center">ผู้จัดการโครงการ</td>
+</tr>
+</tbody></table>
+<blockquote>
+<p><strong>หมายเหตุสำคัญเกี่ยวกับการใช้งานภาพประกอบ:</strong><br>ภาพหน้าจอที่แสดงในคู่มือฉบับนี้ เป็นภาพจากสภาพแวดล้อมการติดตั้งและใช้งานจริงของหน่วยงานตัวอย่าง เพื่อให้ผู้ดูแลระบบเห็นลักษณะการแสดงผลจริง ฟังก์ชัน ปุ่มกด และการจัดวางโครงสร้างระบบที่เป็นมาตรฐานเดียวกันสำหรับทุกองค์กร โดยข้อมูลชื่อหน่วยงาน โลโก้ และเนื้อหาจะปรับเปลี่ยนไปตามแต่ละหน่วยงานที่ติดตั้งใช้งาน</p>
+</blockquote>
+<hr>
+<h2>สารบัญ</h2>
+<ol>
+<li><a href="#1-%E0%B8%A0%E0%B8%B2%E0%B8%9E%E0%B8%A3%E0%B8%A7%E0%B8%A1%E0%B8%A3%E0%B8%B0%E0%B8%9A%E0%B8%9A%E0%B9%81%E0%B8%A5%E0%B8%B0%E0%B8%AA%E0%B8%96%E0%B8%B2%E0%B8%9B%E0%B8%B1%E0%B8%95%E0%B8%A2%E0%B8%81%E0%B8%A3%E0%B8%A3%E0%B8%A1-system-overview">ภาพรวมระบบและสถาปัตยกรรม (System Overview)</a></li>
+<li><a href="#2-%E0%B8%81%E0%B8%B2%E0%B8%A3%E0%B9%80%E0%B8%82%E0%B9%89%E0%B8%B2%E0%B8%AA%E0%B8%B9%E0%B9%88%E0%B8%A3%E0%B8%B0%E0%B8%9A%E0%B8%9A%E0%B9%81%E0%B8%A5%E0%B8%B0%E0%B8%81%E0%B8%B2%E0%B8%A3%E0%B8%88%E0%B8%B1%E0%B8%94%E0%B8%81%E0%B8%B2%E0%B8%A3%E0%B8%9A%E0%B8%B1%E0%B8%8D%E0%B8%8A%E0%B8%B5%E0%B8%9C%E0%B8%B9%E0%B9%89%E0%B9%83%E0%B8%8A%E0%B9%89-authentication--account">การเข้าสู่ระบบและการจัดการบัญชีผู้ใช้ (Authentication &amp; Account)</a></li>
+<li><a href="#3-%E0%B8%A0%E0%B8%B2%E0%B8%9E%E0%B8%A3%E0%B8%A7%E0%B8%A1%E0%B9%81%E0%B8%94%E0%B8%8A%E0%B8%9A%E0%B8%AD%E0%B8%A3%E0%B9%8C%E0%B8%94%E0%B8%AB%E0%B8%A5%E0%B8%B1%E0%B8%81-dashboard-overview">ภาพรวมแดชบอร์ดหลัก (Dashboard Overview)</a></li>
+<li><a href="#4-%E0%B8%A1%E0%B8%B2%E0%B8%95%E0%B8%A3%E0%B8%90%E0%B8%B2%E0%B8%99%E0%B8%81%E0%B8%B2%E0%B8%A3%E0%B8%88%E0%B8%B1%E0%B8%94%E0%B8%81%E0%B8%B2%E0%B8%A3%E0%B8%82%E0%B9%89%E0%B8%AD%E0%B8%A1%E0%B8%B9%E0%B8%A5%E0%B9%81%E0%B8%9A%E0%B8%9A-crud-standard-crud-operations">มาตรฐานการจัดการข้อมูลแบบ CRUD (Standard CRUD Operations)</a></li>
+<li><a href="#5-%E0%B8%81%E0%B8%B2%E0%B8%A3%E0%B8%9A%E0%B8%A3%E0%B8%B4%E0%B8%AB%E0%B8%B2%E0%B8%A3%E0%B8%88%E0%B8%B1%E0%B8%94%E0%B8%81%E0%B8%B2%E0%B8%A3%E0%B9%80%E0%B8%99%E0%B8%B7%E0%B9%89%E0%B8%AD%E0%B8%AB%E0%B8%B2%E0%B9%80%E0%B8%A7%E0%B9%87%E0%B8%9A%E0%B9%84%E0%B8%8B%E0%B8%95%E0%B9%8C-content-management-modules">การบริหารจัดการเนื้อหาเว็บไซต์ (Content Management Modules)</a><ul>
+<li><a href="#51-%E0%B8%82%E0%B9%88%E0%B8%B2%E0%B8%A7%E0%B8%AA%E0%B8%B2%E0%B8%A3%E0%B9%81%E0%B8%A5%E0%B8%B0%E0%B8%9B%E0%B8%A3%E0%B8%B0%E0%B8%81%E0%B8%B2%E0%B8%A8-news--announcements">5.1 ข่าวสารและประกาศ (News &amp; Announcements)</a></li>
+<li><a href="#52-%E0%B8%A0%E0%B8%B2%E0%B8%9E%E0%B8%AA%E0%B9%84%E0%B8%A5%E0%B8%94%E0%B9%8C%E0%B9%81%E0%B8%9A%E0%B8%99%E0%B9%80%E0%B8%99%E0%B8%AD%E0%B8%A3%E0%B9%8C%E0%B8%9B%E0%B8%A3%E0%B8%B0%E0%B8%8A%E0%B8%B2%E0%B8%AA%E0%B8%B1%E0%B8%A1%E0%B8%9E%E0%B8%B1%E0%B8%99%E0%B8%98%E0%B9%8C-banners">5.2 ภาพสไลด์แบนเนอร์ประชาสัมพันธ์ (Banners)</a></li>
+<li><a href="#53-%E0%B8%9B%E0%B8%A3%E0%B8%B0%E0%B8%A1%E0%B8%A7%E0%B8%A5%E0%B8%A0%E0%B8%B2%E0%B8%9E%E0%B8%81%E0%B8%B4%E0%B8%88%E0%B8%81%E0%B8%A3%E0%B8%A3%E0%B8%A1-gallery">5.3 ประมวลภาพกิจกรรม (Gallery)</a></li>
+<li><a href="#54-%E0%B8%9B%E0%B8%8F%E0%B8%B4%E0%B8%97%E0%B8%B4%E0%B8%99%E0%B8%81%E0%B8%B4%E0%B8%88%E0%B8%81%E0%B8%A3%E0%B8%A3%E0%B8%A1%E0%B9%81%E0%B8%A5%E0%B8%B0%E0%B8%99%E0%B8%B1%E0%B8%94%E0%B8%AB%E0%B8%A1%E0%B8%B2%E0%B8%A2-event-calendar">5.4 ปฏิทินกิจกรรมและนัดหมาย (Event Calendar)</a></li>
+<li><a href="#55-%E0%B8%AB%E0%B8%99%E0%B9%89%E0%B8%B2%E0%B9%80%E0%B8%9E%E0%B8%88%E0%B9%80%E0%B8%99%E0%B8%B7%E0%B9%89%E0%B8%AD%E0%B8%AB%E0%B8%B2%E0%B8%84%E0%B8%87%E0%B8%97%E0%B8%B5%E0%B9%88-static-pages">5.5 หน้าเพจเนื้อหาคงที่ (Static Pages)</a></li>
+<li><a href="#56-%E0%B8%82%E0%B9%89%E0%B8%AD%E0%B8%A1%E0%B8%B9%E0%B8%A5%E0%B8%AA%E0%B8%96%E0%B8%B2%E0%B8%99%E0%B8%97%E0%B8%B5%E0%B9%88%E0%B9%81%E0%B8%A5%E0%B8%B0%E0%B9%81%E0%B8%AB%E0%B8%A5%E0%B9%88%E0%B8%87%E0%B8%97%E0%B9%88%E0%B8%AD%E0%B8%87%E0%B9%80%E0%B8%97%E0%B8%B5%E0%B9%88%E0%B8%A2%E0%B8%A7-attractions--landmarks">5.6 ข้อมูลสถานที่และแหล่งท่องเที่ยว (Attractions &amp; Landmarks)</a></li>
+<li><a href="#57-%E0%B8%AA%E0%B8%B4%E0%B8%99%E0%B8%84%E0%B9%89%E0%B8%B2%E0%B8%8A%E0%B8%B8%E0%B8%A1%E0%B8%8A%E0%B8%99%E0%B9%81%E0%B8%A5%E0%B8%B0%E0%B8%9C%E0%B8%A5%E0%B8%B4%E0%B8%95%E0%B8%A0%E0%B8%B1%E0%B8%93%E0%B8%91%E0%B9%8C%E0%B8%97%E0%B9%89%E0%B8%AD%E0%B8%87%E0%B8%96%E0%B8%B4%E0%B9%88%E0%B8%99-otop--local-products">5.7 สินค้าชุมชนและผลิตภัณฑ์ท้องถิ่น (OTOP &amp; Local Products)</a></li>
+<li><a href="#58-%E0%B8%A7%E0%B8%B4%E0%B8%94%E0%B8%B5%E0%B9%82%E0%B8%AD%E0%B8%AA%E0%B8%B7%E0%B9%88%E0%B8%AD%E0%B8%9B%E0%B8%A3%E0%B8%B0%E0%B8%8A%E0%B8%B2%E0%B8%AA%E0%B8%B1%E0%B8%A1%E0%B8%9E%E0%B8%B1%E0%B8%99%E0%B8%98%E0%B9%8C-promotional-videos">5.8 วิดีโอสื่อประชาสัมพันธ์ (Promotional Videos)</a></li>
+<li><a href="#59-%E0%B8%81%E0%B8%A5%E0%B9%88%E0%B8%AD%E0%B8%87%E0%B8%82%E0%B9%89%E0%B8%AD%E0%B8%84%E0%B8%A7%E0%B8%B2%E0%B8%A1%E0%B9%81%E0%B8%A5%E0%B8%B0%E0%B9%84%E0%B8%AE%E0%B9%84%E0%B8%A5%E0%B8%95%E0%B9%8C%E0%B8%AB%E0%B8%99%E0%B9%89%E0%B8%B2%E0%B9%81%E0%B8%A3%E0%B8%81-content-box">5.9 กล่องข้อความและไฮไลต์หน้าแรก (Content Box)</a></li>
+<li><a href="#510-%E0%B8%A3%E0%B8%B0%E0%B8%9A%E0%B8%9A%E0%B8%88%E0%B8%B1%E0%B8%94%E0%B8%81%E0%B8%B2%E0%B8%A3%E0%B8%84%E0%B8%A5%E0%B8%B1%E0%B8%87%E0%B8%AA%E0%B8%B7%E0%B9%88%E0%B8%AD%E0%B9%81%E0%B8%A5%E0%B8%B0%E0%B9%84%E0%B8%9F%E0%B8%A5%E0%B9%8C%E0%B8%AD%E0%B8%B1%E0%B8%9B%E0%B9%82%E0%B8%AB%E0%B8%A5%E0%B8%94-media--file-manager">5.10 ระบบจัดการคลังสื่อและไฟล์อัปโหลด (Media &amp; File Manager)</a></li>
+<li><a href="#511-%E0%B8%81%E0%B8%B2%E0%B8%A3%E0%B8%88%E0%B8%B1%E0%B8%94%E0%B8%81%E0%B8%B2%E0%B8%A3%E0%B9%82%E0%B8%84%E0%B8%A3%E0%B8%87%E0%B8%AA%E0%B8%A3%E0%B9%89%E0%B8%B2%E0%B8%87%E0%B9%80%E0%B8%A1%E0%B8%99%E0%B8%B9%E0%B9%80%E0%B8%A7%E0%B9%87%E0%B8%9A%E0%B9%84%E0%B8%8B%E0%B8%95%E0%B9%8C-navigation-menus">5.11 การจัดการโครงสร้างเมนูเว็บไซต์ (Navigation Menus)</a></li>
+<li><a href="#512-%E0%B8%81%E0%B8%B2%E0%B8%A3%E0%B8%95%E0%B8%B1%E0%B9%89%E0%B8%87%E0%B8%84%E0%B9%88%E0%B8%B2%E0%B8%AB%E0%B8%99%E0%B9%89%E0%B8%B2%E0%B8%95%E0%B9%89%E0%B8%AD%E0%B8%99%E0%B8%A3%E0%B8%B1%E0%B8%9A-%E0%B8%82%E0%B9%89%E0%B8%AD%E0%B8%A1%E0%B8%B9%E0%B8%A5%E0%B8%AB%E0%B8%99%E0%B9%88%E0%B8%A7%E0%B8%A2%E0%B8%87%E0%B8%B2%E0%B8%99-%E0%B9%81%E0%B8%A5%E0%B8%B0-seo-site-settings">5.12 การตั้งค่าหน้าต้อนรับ ข้อมูลหน่วยงาน และ SEO (Site Settings)</a></li>
+</ul>
+</li>
+<li><a href="#6-%E0%B8%A3%E0%B8%B0%E0%B8%9A%E0%B8%9A%E0%B8%9A%E0%B8%A3%E0%B8%B4%E0%B8%81%E0%B8%B2%E0%B8%A3%E0%B8%9B%E0%B8%A3%E0%B8%B0%E0%B8%8A%E0%B8%B2%E0%B8%8A%E0%B8%99%E0%B8%AD%E0%B8%AD%E0%B8%99%E0%B9%84%E0%B8%A5%E0%B8%99%E0%B9%8C%E0%B9%81%E0%B8%A5%E0%B8%B0%E0%B8%81%E0%B8%B2%E0%B8%A3%E0%B8%A3%E0%B8%B1%E0%B8%9A%E0%B9%80%E0%B8%A3%E0%B8%B7%E0%B9%88%E0%B8%AD%E0%B8%87%E0%B8%A3%E0%B9%89%E0%B8%AD%E0%B8%87%E0%B9%80%E0%B8%A3%E0%B8%B5%E0%B8%A2%E0%B8%99-e-service--public-engagement">ระบบบริการประชาชนออนไลน์และการรับเรื่องร้องเรียน (E-Service &amp; Public Engagement)</a><ul>
+<li><a href="#61-%E0%B8%81%E0%B8%B2%E0%B8%A3%E0%B8%88%E0%B8%B1%E0%B8%94%E0%B8%81%E0%B8%B2%E0%B8%A3%E0%B8%84%E0%B8%B3%E0%B8%A3%E0%B9%89%E0%B8%AD%E0%B8%87%E0%B8%9A%E0%B8%A3%E0%B8%B4%E0%B8%81%E0%B8%B2%E0%B8%A3%E0%B8%AD%E0%B8%AD%E0%B8%99%E0%B9%84%E0%B8%A5%E0%B8%99%E0%B9%8C-e-service-requests">6.1 การจัดการคำร้องบริการออนไลน์ (E-Service Requests)</a></li>
+<li><a href="#62-%E0%B8%A8%E0%B8%B9%E0%B8%99%E0%B8%A2%E0%B9%8C%E0%B8%A3%E0%B8%B1%E0%B8%9A%E0%B9%80%E0%B8%A3%E0%B8%B7%E0%B9%88%E0%B8%AD%E0%B8%87%E0%B8%A3%E0%B9%89%E0%B8%AD%E0%B8%87%E0%B8%97%E0%B8%B8%E0%B8%81%E0%B8%82%E0%B9%8C%E0%B9%81%E0%B8%A5%E0%B8%B0%E0%B9%80%E0%B8%A3%E0%B8%B7%E0%B9%88%E0%B8%AD%E0%B8%87%E0%B8%A3%E0%B9%89%E0%B8%AD%E0%B8%87%E0%B9%80%E0%B8%A3%E0%B8%B5%E0%B8%A2%E0%B8%99-public-complaints">6.2 ศูนย์รับเรื่องร้องทุกข์และเรื่องร้องเรียน (Public Complaints)</a></li>
+<li><a href="#63-%E0%B8%A3%E0%B8%B2%E0%B8%A2%E0%B8%87%E0%B8%B2%E0%B8%99%E0%B8%AA%E0%B8%A3%E0%B8%B8%E0%B8%9B%E0%B8%AA%E0%B8%96%E0%B8%B4%E0%B8%95%E0%B8%B4%E0%B8%9C%E0%B8%A5%E0%B8%81%E0%B8%B2%E0%B8%A3%E0%B8%94%E0%B8%B3%E0%B9%80%E0%B8%99%E0%B8%B4%E0%B8%99%E0%B8%87%E0%B8%B2%E0%B8%99-service-summary-reports">6.3 รายงานสรุปสถิติผลการดำเนินงาน (Service Summary Reports)</a></li>
+</ul>
+</li>
+<li><a href="#7-%E0%B8%82%E0%B9%89%E0%B8%AD%E0%B8%A1%E0%B8%B9%E0%B8%A5%E0%B8%AD%E0%B8%87%E0%B8%84%E0%B9%8C%E0%B8%81%E0%B8%A3%E0%B9%81%E0%B8%A5%E0%B8%B0%E0%B8%81%E0%B8%B2%E0%B8%A3%E0%B8%9B%E0%B8%A3%E0%B8%B0%E0%B9%80%E0%B8%A1%E0%B8%B4%E0%B8%99%E0%B8%9C%E0%B8%A5%E0%B8%A1%E0%B8%B2%E0%B8%95%E0%B8%A3%E0%B8%90%E0%B8%B2%E0%B8%99-directory--assessments">ข้อมูลองค์กรและการประเมินผลมาตรฐาน (Directory &amp; Assessments)</a><ul>
+<li><a href="#71-%E0%B8%A3%E0%B8%B0%E0%B8%9A%E0%B8%9A%E0%B8%84%E0%B8%A7%E0%B8%B2%E0%B8%A1%E0%B8%84%E0%B8%B4%E0%B8%94%E0%B9%80%E0%B8%AB%E0%B9%87%E0%B8%99%E0%B9%81%E0%B8%A5%E0%B8%B0%E0%B9%81%E0%B8%9A%E0%B8%9A%E0%B8%AA%E0%B8%B3%E0%B8%A3%E0%B8%A7%E0%B8%88-citizen-feedback--surveys">7.1 ระบบความคิดเห็นและแบบสำรวจ (Citizen Feedback &amp; Surveys)</a></li>
+<li><a href="#72-%E0%B8%81%E0%B8%A3%E0%B8%B0%E0%B8%94%E0%B8%B2%E0%B8%99%E0%B8%AA%E0%B8%99%E0%B8%97%E0%B8%99%E0%B8%B2%E0%B8%AA%E0%B8%B2%E0%B8%98%E0%B8%B2%E0%B8%A3%E0%B8%93%E0%B8%B0-webboard">7.2 กระดานสนทนาสาธารณะ (Webboard)</a></li>
+<li><a href="#73-%E0%B8%97%E0%B8%B3%E0%B9%80%E0%B8%99%E0%B8%B5%E0%B8%A2%E0%B8%9A%E0%B8%9A%E0%B8%B8%E0%B8%84%E0%B8%A5%E0%B8%B2%E0%B8%81%E0%B8%A3%E0%B9%81%E0%B8%A5%E0%B8%B0%E0%B9%82%E0%B8%84%E0%B8%A3%E0%B8%87%E0%B8%AA%E0%B8%A3%E0%B9%89%E0%B8%B2%E0%B8%87%E0%B8%AD%E0%B8%87%E0%B8%84%E0%B9%8C%E0%B8%81%E0%B8%A3-personnel-directory">7.3 ทำเนียบบุคลากรและโครงสร้างองค์กร (Personnel Directory)</a></li>
+<li><a href="#74-%E0%B8%A3%E0%B8%B0%E0%B8%9A%E0%B8%9A%E0%B8%9B%E0%B8%A3%E0%B8%B0%E0%B9%80%E0%B8%A1%E0%B8%B4%E0%B8%99%E0%B8%84%E0%B8%B8%E0%B8%93%E0%B8%98%E0%B8%A3%E0%B8%A3%E0%B8%A1%E0%B9%81%E0%B8%A5%E0%B8%B0%E0%B8%84%E0%B8%A7%E0%B8%B2%E0%B8%A1%E0%B9%82%E0%B8%9B%E0%B8%A3%E0%B9%88%E0%B8%87%E0%B9%83%E0%B8%AA-ita-%E0%B9%81%E0%B8%A5%E0%B8%B0%E0%B8%9B%E0%B8%A3%E0%B8%B0%E0%B8%AA%E0%B8%B4%E0%B8%97%E0%B8%98%E0%B8%B4%E0%B8%A0%E0%B8%B2%E0%B8%9E-lpa">7.4 ระบบประเมินคุณธรรมและความโปร่งใส (ITA) และประสิทธิภาพ (LPA)</a></li>
+</ul>
+</li>
+<li><a href="#8-%E0%B8%81%E0%B8%B2%E0%B8%A3%E0%B8%9A%E0%B8%A3%E0%B8%B4%E0%B8%AB%E0%B8%B2%E0%B8%A3%E0%B8%84%E0%B8%A7%E0%B8%B2%E0%B8%A1%E0%B8%9B%E0%B8%A5%E0%B8%AD%E0%B8%94%E0%B8%A0%E0%B8%B1%E0%B8%A2%E0%B9%81%E0%B8%A5%E0%B8%B0%E0%B8%AA%E0%B8%B4%E0%B8%97%E0%B8%98%E0%B8%B4%E0%B9%8C%E0%B8%81%E0%B8%B2%E0%B8%A3%E0%B9%80%E0%B8%82%E0%B9%89%E0%B8%B2%E0%B8%96%E0%B8%B6%E0%B8%87-security--administration">การบริหารความปลอดภัยและสิทธิ์การเข้าถึง (Security &amp; Administration)</a><ul>
+<li><a href="#81-%E0%B8%81%E0%B8%B2%E0%B8%A3%E0%B8%88%E0%B8%B1%E0%B8%94%E0%B8%81%E0%B8%B2%E0%B8%A3%E0%B8%9C%E0%B8%B9%E0%B9%89%E0%B9%83%E0%B8%8A%E0%B9%89%E0%B8%87%E0%B8%B2%E0%B8%99%E0%B8%A3%E0%B8%B0%E0%B8%9A%E0%B8%9A-user-management">8.1 การจัดการผู้ใช้งานระบบ (User Management)</a></li>
+<li><a href="#82-%E0%B8%9A%E0%B8%97%E0%B8%9A%E0%B8%B2%E0%B8%97%E0%B9%81%E0%B8%A5%E0%B8%B0%E0%B8%AA%E0%B8%B4%E0%B8%97%E0%B8%98%E0%B8%B4%E0%B9%8C%E0%B8%81%E0%B8%B2%E0%B8%A3%E0%B9%83%E0%B8%8A%E0%B9%89%E0%B8%87%E0%B8%B2%E0%B8%99-roles--permissions">8.2 บทบาทและสิทธิ์การใช้งาน (Roles &amp; Permissions)</a></li>
+<li><a href="#83-%E0%B8%9A%E0%B8%B1%E0%B8%99%E0%B8%97%E0%B8%B6%E0%B8%81%E0%B8%9B%E0%B8%A3%E0%B8%B0%E0%B8%A7%E0%B8%B1%E0%B8%95%E0%B8%B4%E0%B9%81%E0%B8%A5%E0%B8%B0%E0%B8%95%E0%B8%A3%E0%B8%A7%E0%B8%88%E0%B8%AA%E0%B8%AD%E0%B8%9A%E0%B8%81%E0%B8%B2%E0%B8%A3%E0%B9%83%E0%B8%8A%E0%B9%89%E0%B8%87%E0%B8%B2%E0%B8%99-audit-logs">8.3 บันทึกประวัติและตรวจสอบการใช้งาน (Audit Logs)</a></li>
+</ul>
+</li>
+<li><a href="#9-%E0%B8%82%E0%B9%89%E0%B8%AD%E0%B9%81%E0%B8%99%E0%B8%B0%E0%B8%99%E0%B8%B3%E0%B9%81%E0%B8%A5%E0%B8%B0%E0%B8%A1%E0%B8%B2%E0%B8%95%E0%B8%A3%E0%B8%90%E0%B8%B2%E0%B8%99%E0%B8%84%E0%B8%A7%E0%B8%B2%E0%B8%A1%E0%B8%9B%E0%B8%A5%E0%B8%AD%E0%B8%94%E0%B8%A0%E0%B8%B1%E0%B8%A2-best-practices">ข้อแนะนำและมาตรฐานความปลอดภัย (Best Practices)</a></li>
+</ol>
+<hr>
+<h2>1. ภาพรวมระบบและสถาปัตยกรรม (System Overview)</h2>
+<p>ระบบบริหารจัดการเว็บไซต์ (Web Content Management System) ถูกพัฒนาขึ้นเพื่อตอบสนองการดำเนินงานขององค์กรภาครัฐ รัฐวิสาหกิจ และองค์กรปกครองส่วนท้องถิ่น (อปท.) โดยมีจุดเด่นดังนี้:</p>
+<ul>
+<li><strong>การตอบสนองแบบเรียลไทม์ (Reactive UI):</strong> พัฒนาบนพื้นฐานของ Laravel และ Livewire ทำให้การสลับหน้า บันทึกข้อมูล กรองข้อมูล และแบ่งหน้าทำงานได้อย่างรวดเร็วโดยไม่ต้องรีโหลดทั้งหน้าเว็บ</li>
+<li><strong>มาตรฐานการออกแบบ UI ที่เป็นเอกภาพ (Unified Design System):</strong> ทุกหน้าจอรายการและฟอร์มถูกสร้างขึ้นบนโครงสร้างเดียวกัน (CRUD Pattern) ทำให้เจ้าหน้าที่สามารถเรียนรู้การใช้งานเมนูใหม่ได้ทันทีโดยไม่ต้องอบรมซ้ำ</li>
+<li><strong>ระบบความปลอดภัยตามมาตรฐานสากล:</strong> รองรับการยืนยันตัวตนสองชั้น (2FA/reCAPTCHA), สิทธิ์การเข้าถึงตามบทบาท (Role-Based Access Control - RBAC), การเข้ารหัสรหัสผ่าน และการบันทึก Audit Log ทุกกิจกรรมสำคัญ</li>
+<li><strong>รองรับการเชื่อมต่อข้อมูลภาครัฐ:</strong> มีโมดูลรองรับระบบจัดซื้อจัดจ้างภาครัฐ (e-GP), หนังสือราชการอิเล็กทรอนิกส์, การประเมิน ITA และเกณฑ์มาตรฐาน LPA</li>
+</ul>
+<hr>
+<h2>2. การเข้าสู่ระบบและการจัดการบัญชีผู้ใช้ (Authentication &amp; Account)</h2>
+<h3>2.1 ขั้นตอนการเข้าสู่ระบบ (Sign In)</h3>
+<ul>
+<li><strong>URL เข้าสู่ระบบ:</strong> <code>https://[ชื่อโดเมนของหน่วยงาน]/auth</code> (หรือ <code>http://127.0.0.1:8000/auth</code> ในสภาพแวดล้อมทดสอบ)</li>
+</ul>
+<p><img src="images/01_login.png" alt="หน้าจอเข้าสู่ระบบ"></p>
+<h4>ขั้นตอนการปฏิบัติ:</h4>
+<ol>
+<li>เปิดเว็บบราวเซอร์ (แนะนำ Google Chrome, Microsoft Edge หรือ Safari เวอร์ชันล่าสุด)</li>
+<li>ไปที่ URL สำหรับเข้าสู่ระบบหลังบ้านของหน่วยงาน</li>
+<li>กรอก <strong>ชื่อผู้ใช้งาน (Username)</strong> ที่ได้รับมอบหมายจากผู้ดูแลระบบ</li>
+<li>กรอก <strong>รหัสผ่าน (Password)</strong></li>
+<li><em>(ทางเลือก)</em> ติ๊กเครื่องหมายถูกที่ช่อง <strong>&quot;จำฉันไว้ในระบบ&quot;</strong> หากใช้งานบนเครื่องคอมพิวเตอร์ส่วนตัวในการปฏิบัติงาน</li>
+<li>ติ๊กยืนยันการตรวจสอบความปลอดภัย <strong>&quot;I&#39;m not a robot&quot; (Google reCAPTCHA)</strong> เพื่อป้องกันการเข้าถึงจากโปรแกรมอัตโนมัติ</li>
+<li>คลิกปุ่ม <strong>&quot;เข้าสู่ระบบ&quot;</strong> เพื่อเข้าสู่ระบบหลังบ้าน</li>
+</ol>
+<hr>
+<h3>2.2 การจัดการบัญชีผู้ใช้และการเปลี่ยนรหัสผ่าน</h3>
+<p>ผู้ใช้งานสามารถคลิกที่ปุ่มโปรไฟล์ชื่อของตนเองบริเวณมุมบนขวา เพื่อเข้าสู่เมนูส่วนตัว:</p>
+<table>
+<thead>
+<tr>
+<th align="center">ข้อมูลบัญชีส่วนตัว (<code>/auth/account</code>)</th>
+<th align="center">เปลี่ยนรหัสผ่านความปลอดภัย (<code>/auth/password</code>)</th>
+</tr>
+</thead>
+<tbody><tr>
+<td align="center"><img src="images/33_account.png" alt="ข้อมูลบัญชีส่วนตัว"></td>
+<td align="center"><img src="images/34_password.png" alt="เปลี่ยนรหัสผ่านความปลอดภัย"></td>
+</tr>
+</tbody></table>
+<ul>
+<li><strong>ข้อมูลบัญชี (<code>/auth/account</code>):</strong> ตรวจสอบข้อมูลชื่อ-นามสกุล, อีเมลสำหรับติดต่อ และชื่อบัญชี</li>
+<li><strong>เปลี่ยนรหัสผ่าน (<code>/auth/password</code>):</strong> เปลี่ยนรหัสผ่านใหม่เพื่อความปลอดภัย โดยต้องระบุรหัสผ่านเดิม และรหัสผ่านใหม่ที่มีความยาวอย่างน้อย 8 ตัวอักษร</li>
+<li><strong>การออกจากระบบ (Logout):</strong> คลิกที่เมนูชื่อบัญชีมุมบนขวา แล้วเลือก <strong>&quot;ออกจากระบบ&quot;</strong> ระบบจะทำลาย Session ในบราวเซอร์เพื่อป้องกันผู้อื่นเข้าใช้งานต่อ</li>
+</ul>
+<hr>
+<h2>3. ภาพรวมแดชบอร์ดหลัก (Dashboard Overview)</h2>
+<ul>
+<li><strong>URL:</strong> <code>/auth/dashboard</code></li>
+</ul>
+<p><img src="images/02_dashboard.png" alt="ภาพรวมแดชบอร์ด"></p>
+<p>แดชบอร์ดเป็นศูนย์รวมข้อมูลสรุปและสถานะการดำเนินงานของเว็บไซต์แบบเรียลไทม์ ประกอบด้วย:</p>
+<ol>
+<li><strong>แถบต้อนรับและสถิติรวม (Header Stats):</strong><ul>
+<li>แสดงชื่อผู้ปฏิบัติงานที่กำลังล็อกอิน</li>
+<li>แสดงตัวเลข <strong>&quot;เนื้อหาทั้งหมด&quot;</strong> ที่มีอยู่ในระบบ</li>
+<li>แสดงตัวเลข <strong>&quot;คำร้อง / ความคิดเห็น&quot;</strong> ที่รอดำเนินการตอบกลับ</li>
+<li>ปุ่มเปิดดูหน้าเว็บไซต์สาธารณะ (เปิดแท็บใหม่)</li>
+</ul>
+</li>
+<li><strong>สวิตช์โหมดแสดงผลพิเศษ (Display Mode):</strong><ul>
+<li><strong>โหมดไว้อาลัย (Mourning Mode):</strong> สวิตช์เปิด/ปิดโทนสีและการแสดงริบบิ้นไว้อาลัยบนหน้าเว็บไซต์สาธารณะในวาระสำคัญ</li>
+</ul>
+</li>
+<li><strong>การ์ดสรุปจำนวนเนื้อหาเว็บไซต์:</strong><ul>
+<li>รายงานจำนวน ข่าวสาร, ภาพสไลด์แบนเนอร์, ภาพกิจกรรม, หน้าเพจ, แหล่งท่องเที่ยว และสินค้าชุมชน</li>
+</ul>
+</li>
+<li><strong>การ์ดบริการประชาชน (E-Service Summary):</strong><ul>
+<li>แสดงสถานะคำร้องที่ส่งเข้ามาจำแนกตามประเภทงาน เช่น แจ้งเหตุ, ขอซ่อมไฟฟ้า, เบี้ยผู้สูงอายุ, จดทะเบียนพาณิชย์ และข้อคิดเห็น</li>
+</ul>
+</li>
+<li><strong>รายการข่าวสารล่าสุด:</strong> รายการข่าว 5 ลำดับล่าสุด พร้อมระบุสถานะ (เผยแพร่ / ฉบับร่าง)</li>
+<li><strong>ปุ่มทางลัดด่วน (Quick Navigation):</strong> เข้าสู่หน้าการทำงานหลักได้ในคลิกเดียว เช่น เพิ่มข่าว, จัดการภาพสไลด์, ตั้งค่าหน่วยงาน, จัดการเมนู และจัดการผู้ใช้งาน</li>
+</ol>
+<hr>
+<h2>4. มาตรฐานการจัดการข้อมูลแบบ CRUD (Standard CRUD Operations)</h2>
+<p>ระบบใช้สถาปัตยกรรม <strong>Unified CRUD Blueprint</strong> ที่เป็นมาตรฐานเดียวกันในทุกโมดูล ทำให้ผู้ใช้งานสามารถเข้าใจขั้นตอนการทำงานได้อย่างรวดเร็ว</p>
+<h3>4.1 [R - Read] การเปิดดูรายการ การค้นหา และตัวกรอง</h3>
+<p><img src="images/03_news_list.png" alt="หน้ารายการข้อมูล"></p>
+<ul>
+<li><strong>ค้นหาด่วน (Search Bar):</strong> พิมพ์คำค้นหา (เช่น ชื่อเรื่อง, หัวข้อ, หรือข้อความสำคัญ) ระบบจะค้นหาและแสดงผลทันทีโดยไม่ต้องกด Enter</li>
+<li><strong>ตัวกรองหมวดหมู่ (Category Filter):</strong> เลือกหมวดหมู่ที่ต้องการจากเมนูดรอปดาวน์เพื่อจำแนกประเภทข้อมูล</li>
+<li><strong>การจัดเรียงลำดับ (Column Sorting):</strong> คลิกที่หัวตาราง (เช่น หัวข้อ, วันที่ลงประกาศ, วันที่สร้าง) เพื่อสลับการเรียงลำดับจากล่าสุดไปเก่าสุด หรือจากน้อยไปมาก</li>
+<li><strong>การแบ่งหน้า (Pagination &amp; Page Size):</strong> สามารถเลือกจำนวนข้อมูลที่แสดงต่อหน้าได้ (15, 25, 50 รายการ) ที่มุมล่างขวา</li>
+</ul>
+<hr>
+<h3>4.2 [C - Create] การเพิ่มข้อมูลใหม่</h3>
+<p><img src="images/04_news_form.png" alt="หน้าต่างฟอร์มเพิ่มข้อมูลใหม่"></p>
+<ol>
+<li>คลิกปุ่ม <strong>&quot;+ เพิ่ม...&quot;</strong> (เช่น <code>+ เพิ่มข่าว</code>, <code>+ เพิ่มรายการ</code>, <code>+ เพิ่มกิจกรรม</code>) ที่แถบเมนูด้านบน</li>
+<li>ระบบจะเปิดหน้าต่าง <strong>Modal Dialog</strong> ขึ้นมา โดยแบ่งส่วนการกรอกข้อมูลเป็นหมวดหมู่อย่างเป็นระเบียบ:<ul>
+<li><strong>ข้อมูลพื้นฐาน:</strong> ระบุหัวข้อหลัก, หมวดหมู่, กำหนดสถานะ (ฉบับร่าง หรือ เผยแพร่), และบทคัดย่อ</li>
+<li><strong>การเผยแพร่:</strong> กำหนดวันที่ลงประกาศ, วันที่เริ่มแสดงผล, วันที่สิ้นสุด (ตั้งเวลาปลดอัตโนมัติ), และลิงก์อ้างอิงภายนอก</li>
+<li><strong>สื่อและรูปประกอบ:</strong> อัปโหลดรูปภาพหน้าปก (Cover Image) และไฟล์เอกสารแนบ (PDF, Word, Excel)</li>
+<li><strong>เนื้อหาละเอียด:</strong> พิมพ์และจัดหน้าเนื้อหาด้วยเครื่องมือ Rich Text Editor (CKEditor)</li>
+</ul>
+</li>
+<li>คลิกปุ่ม <strong>&quot;บันทึก&quot;</strong> (สีเขียว) มุมล่างขวาเพื่อบันทึกข้อมูลเข้าสู่ระบบทันที</li>
+</ol>
+<hr>
+<h3>4.3 [U - Update] การแก้ไขข้อมูลและตัวเลือกประจำแถว</h3>
+<p><img src="images/03b_action_menu.png" alt="เมนูจัดการข้อมูลประจำแถว"></p>
+<ol>
+<li>ในตารางรายการ ให้เลื่อนไปยังแถวข้อมูลที่ต้องการปรับปรุง</li>
+<li>คลิกปุ่ม <strong>จุด 3 จุด (⋮)</strong> ที่คอลัมน์เมนูด้านซ้าย จะปรากฏตัวเลือก:<ul>
+<li><strong>แก้ไข:</strong> เปิดหน้าต่างฟอร์ม Modal Dialog เพื่อแก้ไขข้อมูลเดิม</li>
+<li><strong>ดูหน้าบ้าน / ดูตัวอย่าง:</strong> เปิดแท็บใหม่เพื่อดูการแสดงผลจริงบนหน้าเว็บไซต์สาธารณะ</li>
+<li><strong>ลบ:</strong> ดำเนินการลบรายการนั้นๆ ออกจากระบบ</li>
+</ul>
+</li>
+</ol>
+<hr>
+<h3>4.4 [D - Delete] การลบข้อมูลเดี่ยว และการลบแบบกลุ่ม (Bulk Actions)</h3>
+<table>
+<thead>
+<tr>
+<th align="center">การยืนยันความปลอดภัยก่อนลบข้อมูล</th>
+<th align="center">การเลือกหลายรายการเพื่อจัดการพร้อมกัน (Bulk Actions)</th>
+</tr>
+</thead>
+<tbody><tr>
+<td align="center"><img src="images/03d_delete_confirm.png" alt="การยืนยันการลบ"></td>
+<td align="center"><img src="images/03c_bulk_actions.png" alt="เมนูการจัดการหลายรายการ"></td>
+</tr>
+</tbody></table>
+<ul>
+<li><strong>การลบรายการเดี่ยว (Single Delete):</strong><ul>
+<li>เมื่อคลิกปุ่ม <strong>&quot;ลบ&quot;</strong> ระบบจะมีหน้าต่างยืนยันความปลอดภัย (<em>Confirm Dialog</em>) แจ้งเตือนเพื่อป้องกันการลบข้อมูลโดยอุบัติเหตุ</li>
+<li>เมื่อกดยืนยัน ระบบจะลบข้อมูลและไฟล์รูปภาพ/ไฟล์แนบที่ผูกอยู่กับรายการนั้นออกจาก Server ทันที</li>
+</ul>
+</li>
+<li><strong>การจัดการหลายรายการพร้อมกัน (Bulk Actions):</strong><ol>
+<li>ติ๊กเครื่องหมายถูกที่ช่องสี่เหลี่ยมด้านหน้ารายการที่ต้องการจัดการ (หรือติ๊กช่องบนสุดของหัวตารางเพื่อเลือกทุกรายการในหน้านั้น)</li>
+<li>เมนู <strong>&quot;ดำเนินการ (จำนวนที่เลือก)&quot;</strong> ที่แถบเครื่องมือด้านบนจะพร้อมใช้งาน</li>
+<li>คลิกเพื่อเลือกคำสั่ง:<ul>
+<li><strong>เผยแพร่:</strong> ปรับสถานะรายการที่เลือกให้แสดงบนหน้าเว็บพร้อมกัน</li>
+<li><strong>ฉบับร่าง:</strong> ปรับสถานะรายการที่เลือกให้ซ่อนจากหน้าเว็บพร้อมกัน</li>
+<li><strong>ลบที่เลือก (สีแดง):</strong> ลบรายการทั้งหมดที่เลือกพร้อมกันในครั้งเดียว</li>
+</ul>
+</li>
+</ol>
+</li>
+</ul>
+<hr>
+<h2>5. การบริหารจัดการเนื้อหาเว็บไซต์ (Content Management Modules)</h2>
+<h3>5.1 ข่าวสารและประกาศ (News &amp; Announcements)</h3>
+<ul>
+<li><strong>จัดการข่าวสาร:</strong> <code>/auth/news</code></li>
+<li><strong>จัดการประเภทข่าว:</strong> <code>/auth/news/types</code></li>
+</ul>
+<table>
+<thead>
+<tr>
+<th align="center">หน้ารายการข่าวสาร</th>
+<th align="center">หน้าจัดการประเภทหมวดหมู่ข่าว</th>
+</tr>
+</thead>
+<tbody><tr>
+<td align="center"><img src="images/03_news_list.png" alt="รายการข่าวสาร"></td>
+<td align="center"><img src="images/05_news_types.png" alt="ประเภทข่าวสาร"></td>
+</tr>
+</tbody></table>
+<ul>
+<li><strong>วัตถุประสงค์:</strong> เผยแพร่ข่าวประชาสัมพันธ์, ประกาศจัดซื้อจัดจ้าง, ประกาศรับสมัครงาน, และเอกสารข้อบัญญัติ/เทศบัญญัติ</li>
+<li><strong>แนวปฏิบัติ:</strong><ol>
+<li>แนะนำให้ตั้งค่าหมวดหมู่ข่าวที่หน้า <strong>&quot;ประเภทข่าว&quot;</strong> ให้ครบถ้วนก่อน</li>
+<li>ในหน้าข่าวสาร สามารถกำหนด <strong>&quot;ปักหมุด&quot; (Featured)</strong> เพื่อให้ข่าวนั้นคงอยู่ด้านบนสุดของหน้าแรกเสมอ</li>
+<li>ขนาดรูปภาพหน้าปกที่แนะนำ: สัดส่วน 4:3 (เช่น 800x600 พิกเซล)</li>
+</ol>
+</li>
+</ul>
+<hr>
+<h3>5.2 ภาพสไลด์แบนเนอร์ประชาสัมพันธ์ (Banners)</h3>
+<ul>
+<li><strong>URL:</strong> <code>/auth/banners</code></li>
+</ul>
+<p><img src="images/06_banners.png" alt="ภาพสไลด์แบนเนอร์"></p>
+<ul>
+<li><strong>วัตถุประสงค์:</strong> จัดการภาพแบนเนอร์สไลด์ขนาดใหญ่ด้านบนสุดของหน้าแรก เพื่อเน้นย้ำโครงการสำคัญหรือนโยบายหลัก</li>
+<li><strong>คุณสมบัติ:</strong><ul>
+<li>รองรับทั้งแบนเนอร์สไลด์ขนาดเต็ม (L) และแบนเนอร์ขนาดย่อย (S)</li>
+<li>กำหนดลำดับการเลื่อนแสดงผล (Sort Order)</li>
+<li>กำหนดลิงก์ปลายทางเมื่อประชาชนคลิกที่ภาพแบนเนอร์ (ลิงก์ภายใน หรือเว็บไซต์ภายนอก)</li>
+</ul>
+</li>
+</ul>
+<hr>
+<h3>5.3 ประมวลภาพกิจกรรม (Gallery)</h3>
+<ul>
+<li><strong>URL:</strong> <code>/auth/gallery</code></li>
+</ul>
+<p><img src="images/07_gallery.png" alt="ประมวลภาพกิจกรรม"></p>
+<ul>
+<li><strong>วัตถุประสงค์:</strong> เผยแพร่ภาพบรรยากาศการจัดกิจกรรม งานประเพณี การประชุม และการลงพื้นที่ของหน่วยงาน</li>
+<li><strong>การใช้งาน:</strong><ul>
+<li>กำหนดชื่อกิจกรรม และวันที่จัดกิจกรรม</li>
+<li>แนบรูปหน้าปกอัลบั้ม 1 ภาพ</li>
+<li>อัปโหลดรูปภาพบรรยากาศในกิจกรรมได้ครั้งละหลายรูป (Multi-upload)</li>
+</ul>
+</li>
+</ul>
+<hr>
+<h3>5.4 ปฏิทินกิจกรรมและนัดหมาย (Event Calendar)</h3>
+<ul>
+<li><strong>URL:</strong> <code>/auth/gallery/calendar</code></li>
+</ul>
+<p><img src="images/08_calendar.png" alt="ปฏิทินกิจกรรม"></p>
+<ul>
+<li><strong>วัตถุประสงค์:</strong> ปฏิทินกลางสำหรับแสดงกำหนดการนัดหมาย วันประชุม งานเทศกาล และวันหยุดราชการ</li>
+<li><strong>มุมมอง:</strong> รองรับการแสดงผลแบบรายเดือน (Month), รายสัปดาห์ (Week), รายวัน (Day) และตารางรายการกำหนดการ (List View)</li>
+</ul>
+<hr>
+<h3>5.5 หน้าเพจเนื้อหาคงที่ (Static Pages)</h3>
+<ul>
+<li><strong>URL:</strong> <code>/auth/pages</code></li>
+</ul>
+<p><img src="images/09_pages.png" alt="หน้าเพจเนื้อหา"></p>
+<ul>
+<li><strong>วัตถุประสงค์:</strong> จัดการหน้าเนื้อหาหลักขององค์กร เช่น ประวัติความเป็นมา, วิสัยทัศน์/พันธกิจ, โครงสร้างส่วนราชการ, ยุทธศาสตร์การพัฒนา, อำนาจหน้าที่</li>
+<li><strong>การเชื่อมโยง:</strong> แต่ละหน้าเพจจะมี URL Slug เฉพาะ สามารถนำไปผูกเข้ากับระบบเมนูบนหรือเมนูข้างได้ทันที</li>
+</ul>
+<hr>
+<h3>5.6 ข้อมูลสถานที่และแหล่งท่องเที่ยว (Attractions &amp; Landmarks)</h3>
+<ul>
+<li><strong>URL:</strong> <code>/auth/attractions</code></li>
+</ul>
+<p><img src="images/10_attractions.png" alt="สถานที่และแหล่งท่องเที่ยว"></p>
+<ul>
+<li><strong>วัตถุประสงค์:</strong> ส่งเสริมสถานที่สำคัญ จุดแลนด์มาร์ก แหล่งท่องเที่ยวทางธรรมชาติ ประวัติศาสตร์ หรือศิลปวัฒนธรรมในพื้นที่</li>
+<li><strong>ข้อมูลในระบบ:</strong> ชื่อสถานที่, คำบรรยาย, แกลเลอรีภาพถ่าย, พิกัดแผนที่ (Google Maps Embed), และข้อมูลการติดต่อสอบถาม</li>
+</ul>
+<hr>
+<h3>5.7 สินค้าชุมชนและผลิตภัณฑ์ท้องถิ่น (OTOP &amp; Local Products)</h3>
+<ul>
+<li><strong>URL:</strong> <code>/auth/otop</code></li>
+</ul>
+<p><img src="images/11_otop.png" alt="สินค้าชุมชนและผลิตภัณฑ์ท้องถิ่น"></p>
+<ul>
+<li><strong>วัตถุประสงค์:</strong> ส่งเสริมและจัดแสดงผลิตภัณฑ์เด่นของกลุ่มแม่บ้าน วิสาหกิจชุมชน และสินค้า OTOP ในพื้นที่</li>
+<li><strong>ข้อมูลในระบบ:</strong> ชื่อสินค้า, รูปภาพผลิตภัณฑ์, รายละเอียดส่วนประกอบ, ราคาจำหน่าย, ชื่อกลุ่มผู้ผลิต และช่องทางการสั่งซื้อ</li>
+</ul>
+<hr>
+<h3>5.8 วิดีโอสื่อประชาสัมพันธ์ (Promotional Videos)</h3>
+<ul>
+<li><strong>URL:</strong> <code>/auth/promo-videos</code></li>
+</ul>
+<p><img src="images/12_promo_videos.png" alt="วิดีโอสื่อประชาสัมพันธ์"></p>
+<ul>
+<li><strong>วัตถุประสงค์:</strong> เผยแพร่วิดีทัศน์แนะนำองค์กร รายงานสรุปผลงาน หรือสารคดีชุมชน</li>
+<li><strong>การใช้งาน:</strong> นำลิงก์ URL หรือรหัส Embed จาก YouTube มาวาง ระบบจะดึงภาพปกและสร้างเครื่องเล่นวิดีโอบนหน้าเว็บให้อัตโนมัติ</li>
+</ul>
+<hr>
+<h3>5.9 กล่องข้อความและไฮไลต์หน้าแรก (Content Box)</h3>
+<ul>
+<li><strong>URL:</strong> <code>/auth/box</code></li>
+</ul>
+<p><img src="images/13_box.png" alt="กล่องข้อความและไฮไลต์"></p>
+<ul>
+<li><strong>วัตถุประสงค์:</strong> จัดการพื้นที่พิเศษบนหน้าแรก เช่น สารจากผู้บริหาร, คำแถลงนโยบาย, ประกาศสำคัญเร่งด่วน หรือกล่องข้อความแนะนำบริการ</li>
+</ul>
+<hr>
+<h3>5.10 ระบบจัดการคลังสื่อและไฟล์อัปโหลด (Media &amp; File Manager)</h3>
+<ul>
+<li><strong>URL:</strong> <code>/auth/editor-uploads</code></li>
+</ul>
+<p><img src="images/14_editor_uploads.png" alt="คลังสื่อและไฟล์อัปโหลด"></p>
+<ul>
+<li><strong>วัตถุประสงค์:</strong> ศูนย์รวมการจัดเก็บไฟล์ภาพ เอกสารแบบฟอร์ม PDF แผ่นพับ และสื่อดิจิทัลขององค์กร</li>
+<li><strong>ความสามารถหลัก:</strong><ul>
+<li>สร้างโฟลเดอร์เพื่อจัดระเบียบไฟล์ตามหมวดหมู่</li>
+<li>อัปโหลดไฟล์ด้วยการลากและวาง (Drag &amp; Drop)</li>
+<li>เปลี่ยนชื่อไฟล์ (Rename) และย้ายไฟล์ข้ามโฟลเดอร์ (Move)</li>
+<li>คัดลอกลิงก์ไฟล์ไปใช้งานในบทความหรือเนื้อหาของระบบได้ทันที</li>
+</ul>
+</li>
+</ul>
+<hr>
+<h3>5.11 การจัดการโครงสร้างเมนูเว็บไซต์ (Navigation Menus)</h3>
+<ul>
+<li><strong>เมนูบน (Top Navbar):</strong> <code>/auth/menu-top</code></li>
+<li><strong>เมนูข้าง (Sidebar Menu):</strong> <code>/auth/menu-side</code></li>
+</ul>
+<table>
+<thead>
+<tr>
+<th align="center">การจัดโครงสร้างเมนูบน</th>
+<th align="center">การจัดโครงสร้างเมนูข้าง</th>
+</tr>
+</thead>
+<tbody><tr>
+<td align="center"><img src="images/15_menu_top.png" alt="เมนูบน"></td>
+<td align="center"><img src="images/16_menu_side.png" alt="เมนูข้าง"></td>
+</tr>
+</tbody></table>
+<ul>
+<li><strong>วัตถุประสงค์:</strong> ออกแบบแผนผังการนำทาง (Site Navigation) ของเว็บไซต์</li>
+<li><strong>การใช้งาน:</strong><ul>
+<li>เพิ่มเมนูหลัก และเมนูย่อยระดับ 2 (Sub-menu Dropdown)</li>
+<li>กำหนดประเภทปลายทาง: ลิงก์ภายในระบบ (เลือกจากหน้าเพจหรือโมดูล) หรือ ลิงก์ภายนอก</li>
+<li>จัดลำดับการแสดงผลเมนูได้โดยอิสระ</li>
+</ul>
+</li>
+</ul>
+<hr>
+<h3>5.12 การตั้งค่าหน้าต้อนรับ ข้อมูลหน่วยงาน และ SEO (Site Settings)</h3>
+<ul>
+<li><strong>หน้า Intro:</strong> <code>/auth/setting/intro</code></li>
+<li><strong>ข้อมูลหน่วยงาน:</strong> <code>/auth/setting/org</code></li>
+<li><strong>Meta SEO:</strong> <code>/auth/setting/seo</code></li>
+</ul>
+<table>
+<thead>
+<tr>
+<th align="center">หน้า Intro เทศกาลสำคัญ</th>
+<th align="center">ข้อมูลหน่วยงานและช่องทางติดต่อ</th>
+<th align="center">ตั้งค่า Meta SEO ค้นหา</th>
+</tr>
+</thead>
+<tbody><tr>
+<td align="center"><img src="images/17_setting_intro.png" alt="ตั้งค่าหน้า Intro"></td>
+<td align="center"><img src="images/18_setting_org.png" alt="ตั้งค่าข้อมูลหน่วยงาน"></td>
+<td align="center"><img src="images/19_setting_seo.png" alt="ตั้งค่า Meta SEO"></td>
+</tr>
+</tbody></table>
+<ul>
+<li><strong>หน้า Intro (<code>/auth/setting/intro</code>):</strong> เปิด/ปิดหน้าต้อนรับพิเศษ (Intro Gateway) ในวันสำคัญทางราชการ วันเฉลิมพระเกียรติ หรือเทศกาลประเพณี</li>
+<li><strong>ข้อมูลหน่วยงาน (<code>/auth/setting/org</code>):</strong> จัดการชื่อหน่วยงาน, ตราสัญลักษณ์ (Logo), ที่อยู่สำนักงาน, หมายเลขโทรศัพท์, อีเมลกลาง, แผนที่ Google Maps และลิงก์ Social Media (Facebook Page, LINE Official Account)</li>
+<li><strong>Meta SEO (<code>/auth/setting/seo</code>):</strong> กำหนด Title, Description, Keywords และภาพแชร์สำหรับโซเชียลมีเดีย (OpenGraph Image) เพื่อเพิ่มประสิทธิภาพการค้นหาบน Google</li>
+</ul>
+<hr>
+<h2>6. ระบบบริการประชาชนออนไลน์และการรับเรื่องร้องเรียน (E-Service &amp; Public Engagement)</h2>
+<h3>6.1 การจัดการคำร้องบริการออนไลน์ (E-Service Requests)</h3>
+<ul>
+<li><strong>URL:</strong> <code>/auth/e-service/services</code></li>
+</ul>
+<p><img src="images/20_eservice_services.png" alt="รายการคำร้องบริการประชาชน"></p>
+<ul>
+<li><strong>วัตถุประสงค์:</strong> บริหารจัดการคำขอรับบริการออนไลน์ตามมาตรฐาน พ.ร.บ.การปฏิบัติราชการทางอิเล็กทรอนิกส์ พ.ศ. 2565</li>
+<li><strong>ประเภทงานบริการที่รองรับ:</strong><ol>
+<li>คำร้องทั่วไป (General Petitions)</li>
+<li>คำขอลงทะเบียนเบี้ยยังชีพผู้สูงอายุ / คนพิการ (Elderly &amp; Disability Allowances)</li>
+<li>คำขอจดทะเบียนพาณิชย์ (Commercial Registrations)</li>
+<li>คำขอใบอนุญาตก่อสร้างอาคาร (Construction Permits)</li>
+<li>คำขอติดตั้ง / ซ่อมแซมไฟฟ้าสาธารณะ (Electricity Repairs)</li>
+<li>คำขอติดตั้งน้ำประปา / ชำระค่าน้ำประปา (Water Services)</li>
+<li>คำขอหนังสือรับรองและเอกสารราชการต่างๆ (Certificate Requests)</li>
+</ol>
+</li>
+<li><strong>ขั้นตอนการปฏิบัติงานของเจ้าหน้าที่:</strong><ul>
+<li>เจ้าหน้าที่เข้าตรวจสอบรายการคำร้องใหม่ที่ส่งเข้ามา</li>
+<li>คลิกดูรายละเอียดและตรวจสอบความถูกต้องของเอกสารแนบจากประชาชน</li>
+<li>อัปเดตสถานะงาน: <strong>รอดำเนินการ -&gt; กำลังดำเนินการ -&gt; อนุมัติ / เสร็จสิ้น (หรือ ไม่อนุมัติ)</strong></li>
+<li>บันทึกข้อความตอบกลับหรือหมายเหตุ เพื่อให้ประชาชนสามารถติดตามสถานะผ่านหน้าเว็บได้</li>
+</ul>
+</li>
+</ul>
+<hr>
+<h3>6.2 ศูนย์รับเรื่องร้องทุกข์และเรื่องร้องเรียน (Public Complaints)</h3>
+<ul>
+<li><strong>URL:</strong> <code>/auth/e-service/complaints</code></li>
+</ul>
+<p><img src="images/21_eservice_complaints.png" alt="รายการเรื่องร้องเรียน"></p>
+<ul>
+<li><strong>วัตถุประสงค์:</strong> รับเรื่องร้องทุกข์ เหตุเดือดร้อนรำคาญ ข้อเสนอแนะ และการแจ้งเบาะแสการทุจริตประพฤติมิชอบ</li>
+<li><strong>มาตรฐานการคุ้มครองข้อมูลส่วนบุคคล:</strong><ul>
+<li>ระบบแยกช่องทางร้องเรียนทั่วไป และช่องทางร้องเรียนลับ (สายตรงผู้บริหาร / ป.ป.ช. / ป.ป.ท.)</li>
+<li>ข้อมูลตัวตนของผู้ร้องเรียนจะถูกเข้ารหัสและปกปิดเป็นความลับตาม พ.ร.บ.คุ้มครองข้อมูลส่วนบุคคล (PDPA)</li>
+</ul>
+</li>
+</ul>
+<hr>
+<h3>6.3 รายงานสรุปสถิติผลการดำเนินงาน (Service Summary Reports)</h3>
+<ul>
+<li><strong>URL:</strong> <code>/auth/e-service/summary</code></li>
+</ul>
+<p><img src="images/22_eservice_summary.png" alt="รายงานสรุปสถิติคำร้อง"></p>
+<ul>
+<li><strong>วัตถุประสงค์:</strong> สรุปภาพรวมและสถิติปริมาณคำร้องแต่ละประเภท รายเดือนและรายปี เพื่อนำไปจัดทำรายงานผลการปฏิบัติงานต่อผู้บริหารและหน่วยงานกำกับดูแล</li>
+</ul>
+<hr>
+<h2>7. ข้อมูลองค์กรและการประเมินผลมาตรฐาน (Directory &amp; Assessments)</h2>
+<h3>7.1 ระบบความคิดเห็นและแบบสำรวจ (Citizen Feedback &amp; Surveys)</h3>
+<ul>
+<li><strong>ความคิดเห็นประชาชน:</strong> <code>/auth/feedback</code></li>
+<li><strong>สำรวจความคิดเห็น:</strong> <code>/auth/feedback-surveys</code></li>
+</ul>
+<table>
+<thead>
+<tr>
+<th align="center">ความคิดเห็นและข้อเสนอแนะ</th>
+<th align="center">แบบสำรวจความพึงพอใจ</th>
+</tr>
+</thead>
+<tbody><tr>
+<td align="center"><img src="images/23_feedback.png" alt="ความคิดเห็นประชาชน"></td>
+<td align="center"><img src="images/25_feedback_surveys.png" alt="สำรวจความคิดเห็น"></td>
+</tr>
+</tbody></table>
+<ul>
+<li><strong>ความคิดเห็นประชาชน (<code>/auth/feedback</code>):</strong> กล่องรับฟังความคิดเห็น การประเมินความพึงพอใจการให้บริการ และข้อเสนอแนะในการพัฒนาองค์กร</li>
+<li><strong>แบบสำรวจ (<code>/auth/feedback-surveys</code>):</strong> สร้างโพลล์และแบบสอบถามออนไลน์เพื่อสำรวจความคิดเห็นของประชาชนในประเด็นสำคัญ</li>
+</ul>
+<hr>
+<h3>7.2 กระดานสนทนาสาธารณะ (Webboard)</h3>
+<ul>
+<li><strong>URL:</strong> <code>/auth/webboard</code></li>
+</ul>
+<p><img src="images/24_webboard.png" alt="กระดานสนทนาสาธารณะ"></p>
+<ul>
+<li><strong>วัตถุประสงค์:</strong> ช่องทางการติดต่อสื่อสารและตอบคำถามสาธารณะระหว่างประชาชนและเจ้าหน้าที่</li>
+<li><strong>การดูแลความเรียบร้อย:</strong> เจ้าหน้าที่สามารถตอบกระทู้ ปักหมุดกระทู้สำคัญ หรือลบกระทู้ที่มีข้อความไม่เหมาะสม</li>
+</ul>
+<hr>
+<h3>7.3 ทำเนียบบุคลากรและโครงสร้างองค์กร (Personnel Directory)</h3>
+<ul>
+<li><strong>URL:</strong> <code>/auth/personal</code></li>
+</ul>
+<p><img src="images/26_personal.png" alt="ทำเนียบบุคลากร"></p>
+<ul>
+<li><strong>วัตถุประสงค์:</strong> แสดงผังโครงสร้างผู้บริหาร สมาชิกสภา และข้าราชการ/พนักงานส่วนท้องถิ่น</li>
+<li><strong>การจัดหมวดหมู่ส่วนราชการ:</strong><ul>
+<li>คณะผู้บริหาร</li>
+<li>สภาองค์กรปกครองส่วนท้องถิ่น</li>
+<li>สำนักปลัด</li>
+<li>กองคลัง</li>
+<li>กองช่าง</li>
+<li>กองการศึกษา ศาสนา และวัฒนธรรม</li>
+<li>กองสาธารณสุขและสิ่งแวดล้อม</li>
+</ul>
+</li>
+<li><strong>ข้อมูลบุคลากร:</strong> ชื่อ-นามสกุล, ตำแหน่งหน้าที่, ภาพถ่ายประจำตัว, เบอร์โทรศัพท์ติดต่อ และลำดับการแสดงผล</li>
+</ul>
+<hr>
+<h3>7.4 ระบบประเมินคุณธรรมและความโปร่งใส (ITA) และประสิทธิภาพ (LPA)</h3>
+<ul>
+<li><strong>การประเมิน ITA:</strong> <code>/auth/ita</code></li>
+<li><strong>การประเมิน LPA:</strong> <code>/auth/lpa</code></li>
+</ul>
+<table>
+<thead>
+<tr>
+<th align="center">การประเมินคุณธรรมและความโปร่งใส (ITA)</th>
+<th align="center">การประเมินประสิทธิภาพ อปท. (LPA)</th>
+</tr>
+</thead>
+<tbody><tr>
+<td align="center"><img src="images/27_ita.png" alt="ITA"></td>
+<td align="center"><img src="images/28_lpa.png" alt="LPA"></td>
+</tr>
+</tbody></table>
+<ul>
+<li><strong>ระบบ ITA (<code>/auth/ita</code>):</strong> จัดการเอกสารและลิงก์เปิดเผยข้อมูลสาธารณะ (Open Data Integrity and Transparency Assessment) ตามเกณฑ์สำนักงาน ป.ป.ช. (ตัวชี้วัด O1 - O43)</li>
+<li><strong>ระบบ LPA (<code>/auth/lpa</code>):</strong> จัดเก็บข้อมูลหลักฐานการประเมินประสิทธิภาพขององค์กรปกครองส่วนท้องถิ่น 5 ด้านหลัก (การบริหารจัดการ, การบริหารงานบุคคล, การบริหารการเงินการคลัง, การบริการสาธารณะ, ธรรมาภิบาล)</li>
+</ul>
+<hr>
+<h2>8. การบริหารความปลอดภัยและสิทธิ์การเข้าถึง (Security &amp; Administration)</h2>
+<h3>8.1 การจัดการผู้ใช้งานระบบ (User Management)</h3>
+<ul>
+<li><strong>URL:</strong> <code>/auth/system-users</code></li>
+</ul>
+<p><img src="images/29_system_users.png" alt="ผู้ใช้งานระบบ"></p>
+<ul>
+<li><strong>การสร้างบัญชีใหม่ (Create):</strong> กำหนดชื่อผู้ใช้งาน (Username), อีเมล, รหัสผ่านชั่วคราว และมอบหมายบทบาท (Role)</li>
+<li><strong>การระงับบัญชี (Status):</strong> สามารถเปิด/ปิดการเข้าใช้งานระบบของเจ้าหน้าที่แต่ละคนได้ทันทีเมื่อมีการย้ายงานหรือพ้นสภาพ</li>
+</ul>
+<hr>
+<h3>8.2 บทบาทและสิทธิ์การใช้งาน (Roles &amp; Permissions)</h3>
+<ul>
+<li><strong>บทบาท (Roles):</strong> <code>/auth/master/roles</code></li>
+<li><strong>สิทธิ์ (Permissions):</strong> <code>/auth/master/permissions</code></li>
+</ul>
+<table>
+<thead>
+<tr>
+<th align="center">การกำหนดบทบาท (Roles)</th>
+<th align="center">การกำหนดสิทธิ์การเข้าถึง (Permissions)</th>
+</tr>
+</thead>
+<tbody><tr>
+<td align="center"><img src="images/30_roles.png" alt="บทบาท"></td>
+<td align="center"><img src="images/31_permissions.png" alt="สิทธิ์"></td>
+</tr>
+</tbody></table>
+<ul>
+<li><strong>บทบาท (Roles):</strong> กำหนดกลุ่มผู้ใช้งานตามหน้าที่ เช่น <em>ผู้ดูแลระบบสูงสุด (Superadmin), เจ้าหน้าที่ประชาสัมพันธ์, เจ้าหน้าที่งานทะเบียน, เจ้าหน้าที่รับเรื่องร้องเรียน</em></li>
+<li><strong>สิทธิ์ (Permissions):</strong> กำหนดสิทธิ์ระดับละเอียดในแต่ละโมดูลอย่างชัดเจน (เช่น ดูข้อมูลอย่างเดียว, สร้าง/แก้ไขได้, หรือสิทธิ์ในการลบข้อมูล)</li>
+</ul>
+<hr>
+<h3>8.3 บันทึกประวัติและตรวจสอบการใช้งาน (Audit Logs)</h3>
+<ul>
+<li><strong>URL:</strong> <code>/auth/logs</code></li>
+</ul>
+<p><img src="images/32_logs.png" alt="บันทึกประวัติการใช้งาน"></p>
+<ul>
+<li><strong>วัตถุประสงค์:</strong> จัดเก็บหลักฐานการปฏิบัติงานในระบบตาม พ.ร.บ.ว่าด้วยการกระทำความผิดเกี่ยวกับคอมพิวเตอร์</li>
+<li><strong>ข้อมูลที่บันทึก:</strong> วันที่และเวลา, ผู้ใช้งาน (Username/ID), กิจกรรมที่กระทำ (สร้าง, แก้ไข, ลบ, ล็อกอิน), โมดูลที่ดำเนินการ และหมายเลข IP Address</li>
+</ul>
+<hr>
+<h2>9. ข้อแนะนำและมาตรฐานความปลอดภัย (Best Practices)</h2>
+<ol>
+<li><strong>การบันทึกข้อมูลทุกครั้ง:</strong> เมื่อกรอกข้อมูลในฟอร์มเรียบร้อยแล้ว ต้องคลิกปุ่ม <strong>&quot;บันทึก&quot;</strong> สีเขียวเสมอ หากต้องการยกเลิก ให้คลิกปุ่ม <strong>&quot;ยกเลิก&quot;</strong> หรือเครื่องหมายกากบาท</li>
+<li><strong>การเตรียมขนาดรูปภาพ:</strong><ul>
+<li>ภาพแบนเนอร์หน้าแรก: แนะนำขนาดความละเอียด 1920 x 1080 พิกเซล</li>
+<li>ภาพปกข่าวสารและกิจกรรม: แนะนำขนาดความละเอียด 800 x 600 พิกเซล (หรือสัดส่วน 4:3)</li>
+<li>ขนาดไฟล์รูปภาพไม่ควรเกิน 2-5 MB ต่อภาพ เพื่อความรวดเร็วในการเปิดหน้าเว็บของประชาชน</li>
+</ul>
+</li>
+<li><strong>การใช้งานสถานะ &quot;ฉบับร่าง&quot;:</strong> หากข้อมูลหรือข่าวยังพิมพ์ไม่เสร็จสมบูรณ์ ให้เลือกสถานะเป็น <strong>&quot;ฉบับร่าง&quot;</strong> ข้อมูลจะถูกบันทึกเก็บไว้เฉพาะในหลังบ้าน และจะไม่ปรากฏต่อสาธารณะจนกว่าจะกดเปลี่ยนเป็น <strong>&quot;เผยแพร่&quot;</strong></li>
+<li><strong>ความปลอดภัยของบัญชีผู้ใช้:</strong><ul>
+<li>หลีกเลี่ยงการใช้รหัสผ่านที่คาดเดาได้ง่าย เช่น วันเดือนปีเกิด หรือ 123456</li>
+<li>ควรเปลี่ยนรหัสผ่านเป็นประจำทุก 3 - 6 เดือน</li>
+<li>ไม่เปิดเผยรหัสผ่าน หรือใช้งานร่วมกันหลายบุคคล</li>
+<li>ต้องกด <strong>&quot;ออกจากระบบ&quot; (Logout)</strong> ทุกครั้งหลังเสร็จสิ้นการปฏิบัติงาน โดยเฉพาะเมื่อใช้งานบนเครื่องคอมพิวเตอร์ส่วนกลาง</li>
+</ul>
+</li>
+</ol>
+
+      </article>
+    </main>
+
+  </div>
+
+  <!-- Back to Top Button -->
+  <button type="button" class="back-to-top" id="back-to-top" title="กลับสู่ด้านบน" aria-label="กลับสู่ด้านบน">
+    <svg width="20" height="20" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+      <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M5 15l7-7 7 7"/>
+    </svg>
+  </button>
+
+  <!-- Image Lightbox Modal -->
+  <div class="lightbox-modal" id="lightbox-modal">
+    <button type="button" class="lightbox-close" id="lightbox-close" aria-label="ปิดภาพขยาย">&times;</button>
+    <img src="" alt="ภาพขยาย" class="lightbox-img" id="lightbox-img">
+  </div>
+
+  <!-- Client Application (Pure JS: TOC, ScrollSpy, Lightbox, Dark/Light Mode, Search) -->
+  <script>
+/**
+ * ITCW Web CMS & E-Service Manual — Frontend Client App
+ * Pure Vanilla JavaScript: Table of Contents, ScrollSpy, Lightbox, Search & Theme Toggle
+ * Works 100% offline and when opening index.html directly from file://!
+ */
+
+document.addEventListener('DOMContentLoaded', () => {
+  const contentEl = document.getElementById('manual-content');
+  const tocEl = document.getElementById('toc-nav');
+  const searchInput = document.getElementById('sidebar-search');
+  const themeToggleBtn = document.getElementById('theme-toggle-btn');
+  const menuToggleBtn = document.getElementById('menu-toggle-btn');
+  const sidebarEl = document.getElementById('app-sidebar');
+  const backToTopBtn = document.getElementById('back-to-top');
+  const lightboxModal = document.getElementById('lightbox-modal');
+  const lightboxImg = document.getElementById('lightbox-img');
+  const lightboxClose = document.getElementById('lightbox-close');
+  const printBtn = document.getElementById('print-btn');
+
+  // 1. Theme Management (Dark / Light)
+  const savedTheme = localStorage.getItem('itcw-manual-theme') || 
+    (window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light');
+  document.documentElement.setAttribute('data-theme', savedTheme);
+  updateThemeIcon(savedTheme);
+
+  themeToggleBtn.addEventListener('click', () => {
+    const current = document.documentElement.getAttribute('data-theme');
+    const next = current === 'dark' ? 'light' : 'dark';
+    document.documentElement.setAttribute('data-theme', next);
+    localStorage.setItem('itcw-manual-theme', next);
+    updateThemeIcon(next);
+  });
+
+  function updateThemeIcon(theme) {
+    themeToggleBtn.innerHTML = theme === 'dark' 
+      ? '<svg width="16" height="16" fill="currentColor" viewBox="0 0 24 24"><path d="M12 3v1m0 16v1m9-9h-1M4 12H3m15.364 6.364l-.707-.707M6.343 6.343l-.707-.707m12.728 0l-.707.707M6.343 17.657l-.707.707M16 12a4 4 0 11-8 0 4 4 0 018 0z" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg> <span>สว่าง</span>'
+      : '<svg width="16" height="16" fill="currentColor" viewBox="0 0 24 24"><path d="M20.354 15.354A9 9 0 018.646 3.646 9.003 9.003 0 0012 21a9.003 9.003 0 008.354-5.646z"/></svg> <span>มืด</span>';
+  }
+
+  // 2. Mobile Menu Toggle
+  if (menuToggleBtn && sidebarEl) {
+    menuToggleBtn.addEventListener('click', () => {
+      sidebarEl.classList.toggle('open');
+    });
+  }
+
+  // 3. Print Manual
+  if (printBtn) {
+    printBtn.addEventListener('click', () => window.print());
+  }
+
+  // 4. Back to Top Button
+  window.addEventListener('scroll', () => {
+    if (window.scrollY > 400) {
+      backToTopBtn.classList.add('visible');
+    } else {
+      backToTopBtn.classList.remove('visible');
+    }
+  });
+  backToTopBtn.addEventListener('click', () => {
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+  });
+
+  // 5. Image Lightbox Modal
+  function setupLightbox() {
+    const images = contentEl.querySelectorAll('img');
+    images.forEach(img => {
+      img.addEventListener('click', () => {
+        lightboxImg.src = img.src;
+        lightboxModal.classList.add('open');
+      });
+    });
+
+    lightboxClose.addEventListener('click', () => lightboxModal.classList.remove('open'));
+    lightboxModal.addEventListener('click', (e) => {
+      if (e.target !== lightboxImg) lightboxModal.classList.remove('open');
+    });
+    document.addEventListener('keydown', (e) => {
+      if (e.key === 'Escape') lightboxModal.classList.remove('open');
+    });
+  }
+
+  // 6. Table of Contents & Anchor Generator
+  function generateTOCAndAnchors() {
+    const headings = contentEl.querySelectorAll('h1, h2, h3');
+    tocEl.innerHTML = '';
+    const headingElements = [];
+
+    headings.forEach((h, index) => {
+      let title = h.innerText.trim();
+      let id = h.id || slugify(title) || `section-${index}`;
+      h.id = id;
+
+      const level = parseInt(h.tagName.substring(1), 10);
+      headingElements.push({ id, title, level, element: h });
+
+      // Add to TOC (H2 for main sections, H3 for sub-sections)
+      if (level === 2 || level === 3) {
+        const link = document.createElement('a');
+        link.href = `#${id}`;
+        link.className = level === 2 ? 'toc-link' : 'toc-link toc-sub-link';
+        link.innerText = title;
+        link.setAttribute('data-target-id', id);
+
+        link.addEventListener('click', () => {
+          if (window.innerWidth <= 1024) {
+            sidebarEl.classList.remove('open');
+          }
+        });
+
+        tocEl.appendChild(link);
+      }
+    });
+
+    // 7. ScrollSpy (Active Section Tracking)
+    setupScrollSpy(headingElements);
+  }
+
+  function slugify(text) {
+    return text
+      .toLowerCase()
+      .replace(/[^\u0E00-\u0E7Fa-z0-9\s-]/g, '')
+      .replace(/\s+/g, '-')
+      .replace(/-+/g, '-');
+  }
+
+  function setupScrollSpy(headingElements) {
+    const tocLinks = tocEl.querySelectorAll('.toc-link');
+
+    function onScroll() {
+      const scrollPos = window.scrollY + 120;
+      let currentActiveId = null;
+
+      for (let i = 0; i < headingElements.length; i++) {
+        const item = headingElements[i];
+        if (item.element.offsetTop <= scrollPos) {
+          currentActiveId = item.id;
+        }
+      }
+
+      if (currentActiveId) {
+        tocLinks.forEach(link => {
+          if (link.getAttribute('data-target-id') === currentActiveId) {
+            link.classList.add('active');
+          } else {
+            link.classList.remove('active');
+          }
+        });
+      }
+    }
+
+    window.addEventListener('scroll', onScroll, { passive: true });
+    onScroll();
+  }
+
+  // 8. Search Filter in Sidebar
+  if (searchInput) {
+    searchInput.addEventListener('input', (e) => {
+      const query = e.target.value.toLowerCase().trim();
+      const links = tocEl.querySelectorAll('.toc-link');
+
+      links.forEach(link => {
+        const text = link.innerText.toLowerCase();
+        if (!query || text.includes(query)) {
+          link.style.display = 'block';
+        } else {
+          link.style.display = 'none';
+        }
+      });
+    });
+  }
+
+  // 9. Initialize
+  if (contentEl && contentEl.children.length > 0) {
+    // Content is already pre-rendered directly in index.html!
+    generateTOCAndAnchors();
+    setupLightbox();
+  } else {
+    // Fallback: fetch dynamically if opened via server
+    fetch('./USER_MANUAL.md?t=' + Date.now())
+      .then(res => res.text())
+      .then(md => {
+        if (typeof marked !== 'undefined') {
+          contentEl.innerHTML = marked.parse(md);
+          generateTOCAndAnchors();
+          setupLightbox();
+        }
+      })
+      .catch(console.error);
+  }
+});
+
+  </script>
+</body>
+</html>
