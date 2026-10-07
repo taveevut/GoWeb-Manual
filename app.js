@@ -8,10 +8,20 @@
  * - Image Lightbox for screenshots
  * - Responsive mobile drawer navigation
  * - Print handling and Back-to-Top button
+ * - Service Worker cache registration
  */
 
 (function () {
   'use strict';
+
+  // --- Service Worker Cache ---
+  if ('serviceWorker' in navigator) {
+    window.addEventListener('load', () => {
+      navigator.serviceWorker.register('./sw.js').catch(() => {
+        /* ignore offline/file protocol failures */
+      });
+    });
+  }
 
   // --- Theme Management ---
   const THEME_KEY = 'goweb-manual-theme';
@@ -92,14 +102,6 @@
       link.textContent = text;
       link.setAttribute('data-target', heading.id);
 
-      link.addEventListener('click', (e) => {
-        // Close sidebar on mobile upon clicking
-        const sidebar = document.getElementById('app-sidebar');
-        if (sidebar && window.innerWidth <= 1024) {
-          sidebar.classList.remove('open');
-        }
-      });
-
       fragment.appendChild(link);
     });
 
@@ -170,11 +172,29 @@
   // --- Mobile Sidebar Drawer Toggle ---
   const menuToggleBtn = document.getElementById('menu-toggle-btn');
   const appSidebar = document.getElementById('app-sidebar');
+  const sidebarBackdrop = document.getElementById('sidebar-backdrop');
+
+  function setSidebarOpen(isOpen) {
+    if (!appSidebar) return;
+    appSidebar.classList.toggle('open', isOpen);
+    if (sidebarBackdrop) {
+      sidebarBackdrop.classList.toggle('visible', isOpen);
+      sidebarBackdrop.setAttribute('aria-hidden', isOpen ? 'false' : 'true');
+    }
+    if (menuToggleBtn) {
+      menuToggleBtn.setAttribute('aria-expanded', isOpen ? 'true' : 'false');
+    }
+    document.body.style.overflow = isOpen && window.innerWidth <= 1024 ? 'hidden' : '';
+  }
 
   if (menuToggleBtn && appSidebar) {
     menuToggleBtn.addEventListener('click', () => {
-      appSidebar.classList.toggle('open');
+      setSidebarOpen(!appSidebar.classList.contains('open'));
     });
+
+    if (sidebarBackdrop) {
+      sidebarBackdrop.addEventListener('click', () => setSidebarOpen(false));
+    }
 
     document.addEventListener('click', (e) => {
       if (
@@ -182,8 +202,36 @@
         !appSidebar.contains(e.target) &&
         !menuToggleBtn.contains(e.target)
       ) {
-        appSidebar.classList.remove('open');
+        setSidebarOpen(false);
       }
+    });
+
+    window.addEventListener('resize', () => {
+      if (window.innerWidth > 1024) {
+        setSidebarOpen(false);
+      }
+    });
+  }
+
+  // Close sidebar after TOC click on mobile (reuse setSidebarOpen)
+  document.querySelectorAll('.toc-link').forEach((link) => {
+    link.addEventListener('click', () => {
+      if (window.innerWidth <= 1024) {
+        setSidebarOpen(false);
+      }
+    });
+  });
+
+  // --- Wrap tables for horizontal scroll on small screens ---
+  if (manualContent) {
+    manualContent.querySelectorAll('table').forEach((table) => {
+      if (table.parentElement && table.parentElement.classList.contains('table-scroll')) {
+        return;
+      }
+      const wrapper = document.createElement('div');
+      wrapper.className = 'table-scroll';
+      table.parentNode.insertBefore(wrapper, table);
+      wrapper.appendChild(table);
     });
   }
 
@@ -224,13 +272,17 @@
       img.addEventListener('click', () => {
         lightboxImg.src = img.src;
         lightboxImg.alt = img.alt || 'ภาพขยาย';
-        lightboxModal.classList.add('active');
+        lightboxModal.classList.add('open');
+        document.body.style.overflow = 'hidden';
       });
     });
 
     function closeLightbox() {
-      lightboxModal.classList.remove('active');
+      lightboxModal.classList.remove('open');
       lightboxImg.src = '';
+      if (!(appSidebar && appSidebar.classList.contains('open') && window.innerWidth <= 1024)) {
+        document.body.style.overflow = '';
+      }
     }
 
     if (lightboxClose) {
@@ -244,8 +296,12 @@
     });
 
     document.addEventListener('keydown', (e) => {
-      if (e.key === 'Escape' && lightboxModal.classList.contains('active')) {
-        closeLightbox();
+      if (e.key === 'Escape') {
+        if (lightboxModal.classList.contains('open')) {
+          closeLightbox();
+        } else if (appSidebar && appSidebar.classList.contains('open')) {
+          setSidebarOpen(false);
+        }
       }
     });
   }
