@@ -3,9 +3,57 @@
    Supports Light/Dark Mode, Responsive Sidebar, ScrollSpy, Lightbox & Print
    ========================================================================== */
 
+@font-face {
+  font-family: "MN Burger";
+  src: url("assets/fonts/mn-burger/MN Burger Light.otf") format("opentype");
+  font-weight: 300;
+  font-style: normal;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: "MN Burger";
+  src: url("assets/fonts/mn-burger/MN Burger Light Italic.otf") format("opentype");
+  font-weight: 300;
+  font-style: italic;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: "MN Burger";
+  src: url("assets/fonts/mn-burger/MN Burger.otf") format("opentype");
+  font-weight: 400 600;
+  font-style: normal;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: "MN Burger";
+  src: url("assets/fonts/mn-burger/MN Burger Italic.otf") format("opentype");
+  font-weight: 400 600;
+  font-style: italic;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: "MN Burger";
+  src: url("assets/fonts/mn-burger/MN Burge Bold.otf") format("opentype");
+  font-weight: 700 900;
+  font-style: normal;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: "MN Burger";
+  src: url("assets/fonts/mn-burger/MN Burge Bold Italic.otf") format("opentype");
+  font-weight: 700 900;
+  font-style: italic;
+  font-display: swap;
+}
+
 :root {
-  --font-sans: Tahoma, sans-serif;
-  --font-mono: Tahoma, sans-serif;
+  --font-sans: "MN Burger", Tahoma, sans-serif;
+  --font-mono: "MN Burger", Tahoma, sans-serif;
 
   /* Light Theme Variables */
   --bg-page: #f8fafc;
@@ -82,8 +130,8 @@
 
 html {
   font-family: var(--font-sans);
-  font-size: 16px;
-  line-height: 1.6;
+  font-size: 17px;
+  line-height: 1.65;
   color: var(--text-primary);
   background-color: var(--bg-page);
   scroll-behavior: smooth;
@@ -94,6 +142,7 @@ body {
   min-height: 100vh;
   display: flex;
   flex-direction: column;
+  font-size: 17px;
 }
 
 /* Header Bar */
@@ -274,6 +323,17 @@ body {
   text-overflow: ellipsis;
 }
 
+.toc-h2 {
+  font-weight: 600;
+  margin-top: 0.35rem;
+}
+
+.toc-h3 {
+  padding-left: 1.5rem;
+  font-size: 0.8125rem;
+  color: #94a3b8;
+}
+
 .toc-link:hover {
   background: var(--bg-sidebar-hover);
   color: #ffffff;
@@ -285,9 +345,13 @@ body {
   font-weight: 600;
 }
 
+.toc-h3:hover {
+  color: #f1f5f9;
+}
+
 .toc-sub-link {
-  padding-left: 1.4rem;
-  font-size: 0.825rem;
+  padding-left: 1.5rem;
+  font-size: 0.8125rem;
   color: #94a3b8;
 }
 
@@ -320,7 +384,7 @@ body {
 }
 
 .markdown-body h1 {
-  font-size: 2.25rem;
+  font-size: 2.5rem;
   font-weight: 800;
   line-height: 1.25;
   margin-top: 1rem;
@@ -331,7 +395,7 @@ body {
 }
 
 .markdown-body h2 {
-  font-size: 1.6rem;
+  font-size: 1.75rem;
   font-weight: 700;
   line-height: 1.35;
   margin-top: 2.5rem;
@@ -342,7 +406,7 @@ body {
 }
 
 .markdown-body h3 {
-  font-size: 1.25rem;
+  font-size: 1.35rem;
   font-weight: 600;
   margin-top: 1.75rem;
   margin-bottom: 0.75rem;
@@ -350,7 +414,7 @@ body {
 }
 
 .markdown-body h4 {
-  font-size: 1.05rem;
+  font-size: 1.15rem;
   font-weight: 600;
   margin-top: 1.25rem;
   margin-bottom: 0.5rem;
@@ -359,18 +423,20 @@ body {
 .markdown-body p {
   margin-bottom: 1.15rem;
   color: var(--text-secondary);
-  line-height: 1.75;
+  line-height: 1.8;
+  font-size: 1.05rem;
 }
 
 .markdown-body ul, .markdown-body ol {
   margin-bottom: 1.25rem;
   padding-left: 1.75rem;
   color: var(--text-secondary);
+  font-size: 1.05rem;
 }
 
 .markdown-body li {
-  margin-bottom: 0.35rem;
-  line-height: 1.65;
+  margin-bottom: 0.4rem;
+  line-height: 1.7;
 }
 
 .markdown-body hr {
@@ -385,12 +451,13 @@ body {
   width: 100%;
   border-collapse: collapse;
   margin: 1.5rem 0;
-  font-size: 0.925rem;
+  font-size: 1rem;
   background: var(--bg-surface);
   border: 1px solid var(--border-subtle);
   border-radius: 8px;
   overflow: hidden;
   box-shadow: var(--shadow-sm);
+  table-layout: auto;
 }
 
 .markdown-body th {
@@ -400,13 +467,27 @@ body {
   padding: 0.75rem 1rem;
   text-align: left;
   border-bottom: 1px solid var(--border-subtle);
+  white-space: nowrap;
+  vertical-align: middle;
 }
 
 .markdown-body td {
   padding: 0.75rem 1rem;
   border-bottom: 1px solid var(--border-subtle);
   color: var(--text-secondary);
-  vertical-align: top;
+  vertical-align: middle;
+  line-height: 1.5;
+}
+
+.markdown-body td[align="center"],
+.markdown-body th[align="center"] {
+  text-align: center;
+  white-space: nowrap;
+}
+
+.markdown-body td[align="left"],
+.markdown-body th[align="left"] {
+  text-align: left;
 }
 
 .markdown-body tr:last-child td {
